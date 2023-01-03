@@ -1,4 +1,4 @@
-# YOUR PROJECT TITLE
+# Long Cat
 #### Video Demo:  <URL HERE>
 #### Description:
 TODO
