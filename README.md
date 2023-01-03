@@ -1,2 +1,4 @@
-# Long-Cat
-The final project for the CS50 course
+# YOUR PROJECT TITLE
+#### Video Demo:  <URL HERE>
+#### Description:
+TODO
