@@ -4,26 +4,57 @@ using UnityEngine;
 
 public class Move : MonoBehaviour
 {
+    GameObject move_cam;
     float timer = 0f;
-    public Vector3 frontPos;
     public static float moveTime = 0.9f;
     public static float quickMoveTime = 0.05f;
-    bool right = false;
-    bool left = false;
-    bool up = true;
-    bool down =false;
-
+    public bool right = false;
+    public bool left = false;
+    public bool up = true;
+    public bool down = false;
+    public bool turn = false;
+    
     void Update()
     {
-        timer += 1* Time.deltaTime;
-
         MoveHead();
         Turn();
+        turn = false;
+    }
+    //When facing a direction and colliding with an edge, turn 90 degrees and move forward 1 unit
+    void OnTriggerEnter(Collider collision)
+    {
+        if (collision.gameObject.tag == "Edge" && right == true)
+        {
+            turn = true;
+            transform.Rotate(0, 0, -90, Space.Self);
+            transform.position += transform.TransformDirection (Vector3.up);
+        }
         
+        else if (collision.gameObject.tag == "Edge" && left == true)
+        {
+            turn = true;
+            transform.Rotate(0, 0, -90, Space.Self);
+            transform.position += transform.TransformDirection (Vector3.up);
+        }
+
+        if (collision.gameObject.tag == "Edge" && up == true)
+        {
+            turn = true;
+            transform.Rotate(0, 0, -90, Space.Self);
+            transform.position += transform.TransformDirection (Vector3.up);
+        }
+
+        else if (collision.gameObject.tag == "Edge" && down == true)
+        {
+            turn = true;
+            transform.Rotate(0, 0, -90, Space.Self);
+            transform.position += transform.TransformDirection (Vector3.up);
+        }
     }
     //Function that moves the head of the cat
     void MoveHead()
     {
+        timer += 1* Time.deltaTime;
         if (Input.GetKey(KeyCode.Space) && timer > quickMoveTime)
         {
             transform.position += transform.TransformDirection (Vector3.up);

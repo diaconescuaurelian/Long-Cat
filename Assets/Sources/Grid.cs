@@ -22,7 +22,7 @@ public class Grid : MonoBehaviour
             float z = -7.5f;
             for (int j = 0; j < 16; j++)
             {
-                grid1[i,j] = new Vector3(-8, y, z);
+                grid1[i,j] = new Vector3(-8.5f, y, z);
                 z++;
             }
             y--;
