@@ -12,35 +12,45 @@ public class RotateCamera : MonoBehaviour
     {
         snakeHead = GameObject.FindGameObjectWithTag("Head");
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
 
     // Update is called once per frame
     void Update()
     {
         CameraTurn();
-        finished = true;
     }
 
     void CameraTurn()
     {
-        if (snakeHead.GetComponent<Move>().turn == true && snakeHead.GetComponent<Move>().right == true && finished == true)
-        {   
-            StartCoroutine(Rotate(Vector3.up, -90, 0.3f));
-        }
-        else if (snakeHead.GetComponent<Move>().turn == true && snakeHead.GetComponent<Move>().left == true && finished == true)
-        {
-            StartCoroutine(Rotate(Vector3.up, 90, 0.3f));
-        }
-        else if (snakeHead.GetComponent<Move>().turn == true && snakeHead.GetComponent<Move>().up == true && finished == true)
-        {
-            StartCoroutine(Rotate(Vector3.forward, -90, 0.3f));
-        }
-        else if (snakeHead.GetComponent<Move>().turn == true && snakeHead.GetComponent<Move>().down == true && finished == true)
-        {
-            StartCoroutine(Rotate(Vector3.forward, 90, 0.3f));
+        if (snakeHead.GetComponent<Move>().turnQ.Count != 0)
+        {  
+            Debug.Log("countBefore: " + snakeHead.GetComponent<Move>().turnQ.Count);
+            string direction = snakeHead.GetComponent<Move>().turnQ.Dequeue();
+            Debug.Log("direction: " + direction);
+            Debug.Log("countAfter: " + snakeHead.GetComponent<Move>().turnQ.Count);
+            if (direction == "right")
+            { 
+                //finished = false;
+                StartCoroutine(Rotate(Vector3.up, -90, 0.3f));
+                //finished = true;
+            }
+            else if (direction == "left")
+            {
+                //finished = false;
+                StartCoroutine(Rotate(Vector3.up, 90, 0.3f));
+                //finished = true;
+            }
+            else if (direction == "up")
+            {
+                //finished = false;
+                StartCoroutine(Rotate(Vector3.forward, -90, 0.3f));
+                //finished = true;
+            }
+            else if (direction == "down")
+            {
+                //finished = false;
+                StartCoroutine(Rotate(Vector3.forward, 90, 0.3f));
+                //finished = true;
+            }
         }
     }
 
