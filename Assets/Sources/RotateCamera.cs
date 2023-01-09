@@ -23,33 +23,25 @@ public class RotateCamera : MonoBehaviour
     {
         if (snakeHead.GetComponent<Move>().turnQ.Count != 0)
         {  
-            Debug.Log("countBefore: " + snakeHead.GetComponent<Move>().turnQ.Count);
+            //Debug.Log("countBefore: " + snakeHead.GetComponent<Move>().turnQ.Count);
             string direction = snakeHead.GetComponent<Move>().turnQ.Dequeue();
-            Debug.Log("direction: " + direction);
-            Debug.Log("countAfter: " + snakeHead.GetComponent<Move>().turnQ.Count);
+            //Debug.Log("direction: " + direction);
+            //Debug.Log("countAfter: " + snakeHead.GetComponent<Move>().turnQ.Count);
             if (direction == "right")
             { 
-                //finished = false;
                 StartCoroutine(Rotate(Vector3.up, -90, 0.3f));
-                //finished = true;
             }
             else if (direction == "left")
             {
-                //finished = false;
                 StartCoroutine(Rotate(Vector3.up, 90, 0.3f));
-                //finished = true;
             }
             else if (direction == "up")
             {
-                //finished = false;
                 StartCoroutine(Rotate(Vector3.forward, -90, 0.3f));
-                //finished = true;
             }
             else if (direction == "down")
             {
-                //finished = false;
                 StartCoroutine(Rotate(Vector3.forward, 90, 0.3f));
-                //finished = true;
             }
         }
     }
