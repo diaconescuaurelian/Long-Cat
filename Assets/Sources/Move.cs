@@ -13,6 +13,7 @@ public class Move : MonoBehaviour
     public bool up = true;
     public bool down = false;
     public bool can_move;
+    public float timer_turn;
     public Queue<string> turnQ = new Queue<string>();
     
     void Awake()
@@ -25,8 +26,11 @@ public class Move : MonoBehaviour
         {
             can_move = false;
             Turn();
-            MoveHead();
+            //MoveHead();
         }
+        MoveHead();
+        //daca move head e in if se face un delay
+        //cum fac sa astepte si body parts
     }
     //When facing a direction and colliding with an edge, turn 90 degrees and move forward 1 unit
     void OnTriggerEnter(Collider collision)
@@ -82,8 +86,10 @@ public class Move : MonoBehaviour
     }
     //Function that turns the head of the cat
     void Turn()
-    {   //Turn Right if facing up
-        if (Input.GetKey(KeyCode.RightArrow) && up == true  && right == false && left == false)
+    {   //trebuie sa mai fac o conditie si cu ceva timer la turn
+        //sau poate ceva cu old dir si new dir
+        //Turn Right if facing up
+        if (Input.GetKeyDown(KeyCode.RightArrow) && up == true  && right == false && left == false && Input.GetKey(KeyCode.UpArrow) == false && Input.GetKey(KeyCode.DownArrow) ==false)
         {
             transform.Rotate(-90, 0, 0, Space.Self);
             transform.position += transform.TransformDirection (Vector3.up);
@@ -91,7 +97,7 @@ public class Move : MonoBehaviour
             up = false;
         }
         //Turn Right if facing down
-        if (Input.GetKey(KeyCode.RightArrow) &&  down == true && right == false && left == false)
+        if (Input.GetKeyDown(KeyCode.RightArrow) &&  down == true && right == false && left == false && Input.GetKey(KeyCode.UpArrow) == false && Input.GetKey(KeyCode.DownArrow) ==false)
         {
             transform.Rotate(90, 0, 0, Space.Self);
             transform.position += transform.TransformDirection (Vector3.up);
@@ -99,7 +105,7 @@ public class Move : MonoBehaviour
             down = false;
         }
         //Turn Left if facing up
-        if (Input.GetKey(KeyCode.LeftArrow) && up == true  && left == false && right == false)
+        if (Input.GetKeyDown(KeyCode.LeftArrow) && up == true  && left == false && right == false && Input.GetKey(KeyCode.UpArrow) == false && Input.GetKey(KeyCode.DownArrow) ==false)
         {
             transform.Rotate(90, 0, 0, Space.Self);
             transform.position += transform.TransformDirection (Vector3.up);
@@ -107,7 +113,7 @@ public class Move : MonoBehaviour
             up = false;
         }
         //Turn Left if facing down
-        if (Input.GetKey(KeyCode.LeftArrow) && down == true && left == false && right == false)
+        if (Input.GetKeyDown(KeyCode.LeftArrow) && down == true && left == false && right == false && Input.GetKey(KeyCode.UpArrow) == false && Input.GetKey(KeyCode.DownArrow) ==false)
         {
             transform.Rotate(-90, 0, 0, Space.Self);
             transform.position += transform.TransformDirection (Vector3.up);
@@ -115,7 +121,7 @@ public class Move : MonoBehaviour
             down = false;
         }
         //Turn Up if facing right
-        if (Input.GetKey(KeyCode.UpArrow) &&  right == true && up == false && down == false)
+        if (Input.GetKeyDown(KeyCode.UpArrow) &&  right == true && up == false && down == false && Input.GetKey(KeyCode.LeftArrow) == false && Input.GetKey(KeyCode.RightArrow) ==false)
         {
             transform.Rotate(90, 0, 0, Space.Self);
             transform.position += transform.TransformDirection (Vector3.up);
@@ -123,7 +129,7 @@ public class Move : MonoBehaviour
             right = false;
         }
         //Turn Up if facing left
-        if (Input.GetKey(KeyCode.UpArrow) && left == true  && up == false && down == false)
+        if (Input.GetKeyDown(KeyCode.UpArrow) && left == true  && up == false && down == false && Input.GetKey(KeyCode.LeftArrow) == false && Input.GetKey(KeyCode.RightArrow) ==false)
         {
             transform.Rotate(-90, 0, 0, Space.Self);
             transform.position += transform.TransformDirection (Vector3.up);
@@ -131,7 +137,7 @@ public class Move : MonoBehaviour
             left = false;
         }
         //Turn Down if facing 
-        if (Input.GetKey(KeyCode.DownArrow) &&  right == true && up == false && down == false)
+        if (Input.GetKeyDown(KeyCode.DownArrow) &&  right == true && up == false && down == false && Input.GetKey(KeyCode.LeftArrow) == false && Input.GetKey(KeyCode.RightArrow) ==false)
         {
             transform.Rotate(-90, 0, 0, Space.Self);
             transform.position += transform.TransformDirection (Vector3.up);
@@ -139,7 +145,7 @@ public class Move : MonoBehaviour
             right = false;
         }
 
-        if (Input.GetKey(KeyCode.DownArrow) && left == true  && up == false && down == false)
+        if (Input.GetKeyDown(KeyCode.DownArrow) && left == true  && up == false && down == false && Input.GetKey(KeyCode.LeftArrow) == false && Input.GetKey(KeyCode.RightArrow) ==false)
         {
             transform.Rotate(90, 0, 0, Space.Self);
             transform.position += transform.TransformDirection (Vector3.up);
