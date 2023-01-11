@@ -12,20 +12,22 @@ public class Move : MonoBehaviour
     public bool left = false;
     public bool up = true;
     public bool down = false;
-    public bool can_move;
-    public float timer_turn;
+    public bool can_turn;
     public Queue<string> turnQ = new Queue<string>();
     
     void Awake()
     {
         move_cam = GameObject.FindGameObjectWithTag("MainCamera");
+        can_turn = true;
     }
     void Update()
     {
         if (move_cam.GetComponent<RotateCamera>().finished == true)
         {
-            can_move = false;
-            Turn();
+            if (can_turn)
+            {
+                Turn();
+            }
             //MoveHead();
         }
         MoveHead();
@@ -35,36 +37,51 @@ public class Move : MonoBehaviour
     //When facing a direction and colliding with an edge, turn 90 degrees and move forward 1 unit
     void OnTriggerEnter(Collider collision)
     {
+        //fara transform.position nu mai e bugul de pe margine
         if (collision.gameObject.tag == "Edge" && right == true)
         {
             transform.Rotate(0, 0, -90, Space.Self);
-            transform.position += transform.TransformDirection (Vector3.up);
-            can_move = true;
+            //transform.position += transform.TransformDirection (Vector3.up);
             turnQ.Enqueue("right");
+            can_turn = false;
         }
         
         else if (collision.gameObject.tag == "Edge" && left == true)
         {
             transform.Rotate(0, 0, -90, Space.Self);
-            transform.position += transform.TransformDirection (Vector3.up);
-            can_move = true;
+            //transform.position += transform.TransformDirection (Vector3.up);
             turnQ.Enqueue("left");
+            can_turn = false;
         }
 
-        if (collision.gameObject.tag == "Edge" && up == true)
+        else if (collision.gameObject.tag == "Edge" && up == true)
         {
             transform.Rotate(0, 0, -90, Space.Self);
-            transform.position += transform.TransformDirection (Vector3.up);
-            can_move = true;
+            //transform.position += transform.TransformDirection (Vector3.up);
             turnQ.Enqueue("up");
+            can_turn = false;
         }
 
         else if (collision.gameObject.tag == "Edge" && down == true)
         {
             transform.Rotate(0, 0, -90, Space.Self);
-            transform.position += transform.TransformDirection (Vector3.up);
-            can_move = true;
+            //transform.position += transform.TransformDirection (Vector3.up);
             turnQ.Enqueue("down");
+            can_turn = false;
+        }
+
+    }
+
+    void OnTriggerExit(Collider collision)
+    {
+        if (collision.gameObject.tag == "Edge")
+        {
+            can_turn = true;
+        }
+
+        if (collision.gameObject.tag == "Food")
+        {
+            can_turn = true;
         }
     }
     //Function that moves the head of the cat
@@ -74,13 +91,11 @@ public class Move : MonoBehaviour
         if (Input.GetKey(KeyCode.Space) && timer > quickMoveTime)
         {
             transform.position += transform.TransformDirection (Vector3.up);
-            can_move = true;
             timer = 0;
         }
         else if (timer > moveTime)
         {
             transform.position += transform.TransformDirection (Vector3.up);
-            can_move = true;
             timer = 0;
         }
     }

@@ -7,6 +7,10 @@ TagManager:
   - Edge
   - Head
   - Body
+  - Food
+  - LongCat
+  - FoodSpawner
+  - Obstacle
   layers:
   - Default
   - TransparentFX

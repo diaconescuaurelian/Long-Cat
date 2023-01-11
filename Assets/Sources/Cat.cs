@@ -7,7 +7,7 @@ public class Cat : MonoBehaviour
     GameObject move_cam;
     GameObject cat_head;
     GameObject cat_body_part;
-    float distance = -1.0f;
+    public float distance = -1.0f;
     float timer = 0f;
     public static float moveTime = 0.9f;
     public static float quickMoveTime = 0.15f;
@@ -278,11 +278,32 @@ public class Cat : MonoBehaviour
                 //Debug.Log("Muta forward");
                 cat[i].transform.position = cat[i-1].transform.position + cat[i-1].transform.right * (- distance);
             }
+            // in if-ul asta am de modificat 
+            /*
+            else if (i - 1 > 0 && cat[i].GetComponent<Body>().on_edge)
+            {
+                if (cat[i].GetComponent<Body>().new_direction == cat[i].GetComponent<Body>().old_direction && cat[i].GetComponent<Body>().on_edge && cat[i - 1].GetComponent<Body>().new_direction == "right")
+                cat[i].transform.Rotate(0, -90, 90, Space.Self);
+                if (i + 1 < cat.Count)
+                {
+                    if (cat[i + 1].GetComponent<Body>().new_direction == cat[i].GetComponent<Body>().new_direction)
+                    {
+                        //cat[i + 1].transform.position = cat[i].transform.position + cat[i].transform.right * distance;
+                        //cat[i].transform.Rotate(0, 0, 90, Space.Self);
+                        cat[i + 1].transform.Rotate(0, 0, 90, Space.Self);
+                    }
+                }
+                cat[i].GetComponent<Body>().on_edge = false;
+            }
+            */
             else
             { 
                //Debug.Log("Muta up");
                 cat[i].transform.position = cat[i-1].transform.position + cat[i-1].transform.up * distance;
             }
+
+            
+            
         }
     }
     void Direction()

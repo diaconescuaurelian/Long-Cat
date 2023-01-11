@@ -28,6 +28,7 @@ public class Body : MonoBehaviour
         {
             Debug.Log("Coliziune  " + new_direction);
             transform.Rotate(0, 0, -90, Space.Self);
+            //transform.position += transform.TransformDirection (Vector3.up);
             on_edge = true;
             //on_edge.Enqueue("right");
             //transform.position += transform.TransformDirection (Vector3.up);
@@ -37,6 +38,7 @@ public class Body : MonoBehaviour
         {
             Debug.Log("Coliziune  " + new_direction);
             transform.Rotate(0, 0, -90, Space.Self);
+            //transform.position += transform.TransformDirection (Vector3.up);
             on_edge = true;
             //on_edge.Enqueue("left");
             //transform.position += transform.TransformDirection (Vector3.up);
@@ -46,6 +48,7 @@ public class Body : MonoBehaviour
         {
             Debug.Log("Coliziune  " + new_direction);
             transform.Rotate(0, 0, -90, Space.Self);
+            //transform.position += transform.TransformDirection (Vector3.up);
             on_edge = true;
             //on_edge.Enqueue("up");
             //transform.position += transform.TransformDirection (Vector3.up);
@@ -55,6 +58,7 @@ public class Body : MonoBehaviour
         {
             Debug.Log("Coliziune  " + new_direction);
             transform.Rotate(0, 0, -90, Space.Self);
+            //transform.position += transform.TransformDirection (Vector3.up);
             on_edge = true;
             //on_edge.Enqueue("down");
             //transform.position += transform.TransformDirection (Vector3.up);
