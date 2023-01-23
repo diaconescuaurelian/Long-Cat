@@ -5,12 +5,15 @@ using UnityEngine;
 public class RotateCamera : MonoBehaviour
 {
 
+
     GameObject snakeHead;
+    ChangeDirection snekeHeadDirection;
     public float speed = 90;
     public bool finished = true;
     void Awake()
     {
         snakeHead = GameObject.FindGameObjectWithTag("Head");
+        snekeHeadDirection = snakeHead.GetComponent<ChangeDirection>();
     }
 
     // Update is called once per frame
@@ -21,10 +24,10 @@ public class RotateCamera : MonoBehaviour
 
     void CameraTurn()
     {
-        if (snakeHead.GetComponent<Move>().turnQ.Count != 0)
+        if (snekeHeadDirection.turQNotEmpty())
         {  
             //Debug.Log("countBefore: " + snakeHead.GetComponent<Move>().turnQ.Count);
-            string direction = snakeHead.GetComponent<Move>().turnQ.Dequeue();
+            string direction = snekeHeadDirection.cameraRotateDirection();
             //Debug.Log("direction: " + direction);
             //Debug.Log("countAfter: " + snakeHead.GetComponent<Move>().turnQ.Count);
             if (direction == "right")
@@ -62,4 +65,5 @@ public class RotateCamera : MonoBehaviour
         transform.rotation = to;
         finished = true;
     }
+    
 }

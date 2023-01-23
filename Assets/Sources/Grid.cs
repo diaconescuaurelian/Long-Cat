@@ -99,6 +99,7 @@ public class Grid : MonoBehaviour
 
     public void SpawnFood()
     {
+        // mai trebuie sa verific daca sunt coliziuni inainte sa spawnez
         int randFace = Random.Range(1, 7);
         if (randFace == 1)
         {

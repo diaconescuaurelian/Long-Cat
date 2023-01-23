@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EatFood : MonoBehaviour
 {
+    /*
     GameObject food;
     GameObject food_spawner;
     GameObject cat_body;
@@ -35,10 +36,12 @@ public class EatFood : MonoBehaviour
             int last = cat_body.GetComponent<Cat>().cat.Count - 1;
             Vector3 position = cat_body.GetComponent<Cat>().cat[last].transform.position + cat_body.GetComponent<Cat>().cat[last].transform.up * cat_body.GetComponent<Cat>().distance;
             GameObject new_body = Instantiate(body_part, position, cat_body.GetComponent<Cat>().cat[last].transform.rotation) as GameObject;
+            new_body.transform.parent = cat_body.transform;
             cat_body.GetComponent<Cat>().cat.Add(new_body);
             
 
             
         }
     }
+    */
 }

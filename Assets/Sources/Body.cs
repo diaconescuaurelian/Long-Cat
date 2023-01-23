@@ -4,24 +4,83 @@ using UnityEngine;
 
 public class Body : MonoBehaviour
 {
-    public static float moveTime = 0.9f;
-    public static float quickMoveTime = 0.07f;
-    public string old_direction = "just started";
-    public string new_direction;
-    //public Queue<string> on_edgeQ = new Queue<string>();
-    public int rotate_count;
-    public bool on_edge;
+    public string bodyType;
+    public string oldDir;
+    public string newDir;
 
     void Start()
     {
-        on_edge = false;
+
     }
     void Update()
     {
         //on_edge = false;
         //MoveBody();
     }
+
+    public void setNewDir(string dir)
+    {
+        newDir = dir;
+    }
+    public void setOldDir(string dir)
+    {
+        oldDir = dir;
+    }
+    public string getNewDir()
+    {
+        return newDir;
+    }
+    public string getOldDir()
+    {
+        return oldDir;
+    }
+
+    public void SetBodyType(string type)
+    {
+        bodyType = type;
+    }
+
+    public bool checkNewDir(string dir)
+    {
+        if (newDir == dir)
+        {
+            return true;
+        }
+        else return false;
+    }
+    public bool checkOldDir(string dir)
+    {
+        if (oldDir == dir)
+        {
+            return true;
+        }
+        else return false;
+    }
+
+    public bool checkBodyType(string type)
+    {
+        if (bodyType == type)
+        {
+            return true;
+        }
+        else return false;
+    }
+
+    //This function returns true if the old dir is the same as the new dir
+    public bool checkIfDirIsChanged()
+    {
+        if (newDir != oldDir)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
     
+
+    /*
     void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.tag == "Edge" && new_direction == "right")
@@ -73,5 +132,5 @@ public class Body : MonoBehaviour
          }
     }
 
-    
+    */
 }
