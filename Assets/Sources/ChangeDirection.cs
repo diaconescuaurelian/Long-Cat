@@ -5,19 +5,17 @@ using UnityEngine;
 
 public class ChangeDirection : Body
 {
-    GameObject head;
-    Move headMoveComponent;
     private GameObject catObject;
     private MoveCat moveCatScript;
     public bool changeFace;
     public bool changeFaceFront;
     public bool canTurn = true;
     public Queue<string> turnQ = new Queue<string>();
-    //private float timer = 0f;
-    //private float moveTime = 0.9f;
-    //private float quickMoveTime = 0.05f;
+    private bool turned = false;
     public int rotateCount = 0;
-    //bool changedHeadDirection = false;
+    private int rotationType;
+    private float turnAgainTimer = 0.0f;
+    //bool headCanTurn = true;
     void Awake()
     {
         oldDir = "just started";
@@ -33,101 +31,173 @@ public class ChangeDirection : Body
     // Update is called once per frame
     void Update()
     {
-        
+        TurnAgain();
     }
-    // dupa ce apas dreapta si schimb directia head-ului pe new = right old = up
-    // daca il las la mearga in continuare nu isi modifica pozitia ca new = right old = right
-
-    //verifica daca in momentul in care s-a apasat o sageata si rotirea e valida
-    //adica imediat ce ai  intrat in vreun if
-    //daca space-ul e apasat si timer-ul din moveHead e > 0.12 sau < 0.03 asteapta ceva gen 0.05 sec si apoi fa opeatiile 
-    public void TurnHead(GameObject head, ChangeDirection headDirections) 
-    {   
-        //changedHeadDirection = true;
-        if (Input.GetKeyDown(KeyCode.RightArrow) && checkNewDir("up"))
+    
+    public void TurnHead(GameObject head, ChangeDirection headDirections, Move headMove) 
+    {   //mai verifica la TurnHead cu delay daca se afla pe collider sa nu mai faca deloc rotirea
+        if (Input.GetKeyDown(KeyCode.RightArrow) && checkNewDir("up") && !changeFace && turnAgainTimer > 0.05f)
         {
-            //Debug.Log("Roteste dreapta");
-            head.transform.Rotate(-90, 0, 0, Space.Self);
-            head.transform.position += transform.TransformDirection (Vector3.up);
-            headDirections.setNewDir("right");
-            headDirections.setOldDir("up");
-            moveCatScript.SetTurnedHeadList();
+            rotationType = 1;
+            //turn the head only if enough time has passed since the last time the head moved
+            if (headMove.getTimer() < 0.05f)
+            {
+                StartCoroutine(DelayTurn(headMove.getTimer(), headDirections));
+            }
+            //rotate the head, move it 1 unit in its up direction, and set its direction
+            //then set the list of bool to true so that move body can be called
+            //set the timer that is used to check if no 2 consecutive head turns take place at an interval too short one after the other
+            else
+            {
+                transform.Rotate(-90, 0, 0, Space.Self);
+                transform.position += transform.TransformDirection (Vector3.up);
+                headDirections.setNewDir("right");
+                headDirections.setOldDir("up");
+                moveCatScript.SetTurnedHeadList();
+                turned = true;
+                turnAgainTimer = 0.0f;
+            }
+            
         }
-        //Turn Right if facing down
-        else if (Input.GetKeyDown(KeyCode.RightArrow) && checkNewDir("down"))
+        //Turn right if facing down
+        else if (Input.GetKeyDown(KeyCode.RightArrow) && checkNewDir("down") && !changeFace && turnAgainTimer > 0.05f)
         {
-            //Debug.Log("Roteste dreapta");
-            head.transform.Rotate(90, 0, 0, Space.Self);
-            head.transform.position += transform.TransformDirection (Vector3.up);
-            headDirections.setNewDir("right");
-            headDirections.setOldDir("down");
-            moveCatScript.SetTurnedHeadList();
+            rotationType = 2;
+            if (headMove.getTimer() < 0.05f)
+            {
+                StartCoroutine(DelayTurn(headMove.getTimer(), headDirections));
+            }
+            else
+            {
+                head.transform.Rotate(90, 0, 0, Space.Self);
+                head.transform.position += transform.TransformDirection (Vector3.up);
+                headDirections.setNewDir("right");
+                headDirections.setOldDir("down");
+                moveCatScript.SetTurnedHeadList();
+                turned = true;
+                turnAgainTimer = 0.0f;
+            }
+            
         }
-        //Turn Left if facing up
-        else if (Input.GetKeyDown(KeyCode.LeftArrow)  && checkNewDir("up"))
+        //Turn left if facing up
+        else if (Input.GetKeyDown(KeyCode.LeftArrow)  && checkNewDir("up") && !changeFace && turnAgainTimer > 0.05f)
         {
-            //Debug.Log("Roteste stanga");
-            head.transform.Rotate(90, 0, 0, Space.Self);
-            head.transform.position += transform.TransformDirection (Vector3.up);
-            headDirections.setNewDir("left");
-            headDirections.setOldDir("up");
-            moveCatScript.SetTurnedHeadList();
+            rotationType = 3;
+            if ( headMove.getTimer() < 0.05f)
+            {
+                StartCoroutine(DelayTurn(headMove.getTimer(), headDirections));
+            }
+            else
+            {
+                head.transform.Rotate(90, 0, 0, Space.Self);
+                head.transform.position += transform.TransformDirection (Vector3.up);
+                headDirections.setNewDir("left");
+                headDirections.setOldDir("up");
+                moveCatScript.SetTurnedHeadList();
+                turned = true;
+                turnAgainTimer = 0.0f;
+            }
         }
-        //Turn Left if facing down
-        else if (Input.GetKeyDown(KeyCode.LeftArrow) && checkNewDir("down"))
+        //Turn left if facing down
+        else if (Input.GetKeyDown(KeyCode.LeftArrow) && checkNewDir("down") && !changeFace && turnAgainTimer > 0.05f)
         {
-            //Debug.Log("Roteste stanga");
-            head.transform.Rotate(-90, 0, 0, Space.Self);
-            head.transform.position += transform.TransformDirection (Vector3.up);
-            headDirections.setNewDir("left");
-            headDirections.setOldDir("down");
-            moveCatScript.SetTurnedHeadList();
+            rotationType = 4;
+            if ( headMove.getTimer() < 0.05f)
+            {
+                StartCoroutine(DelayTurn(headMove.getTimer(), headDirections));
+            }
+            else
+            {
+                head.transform.Rotate(-90, 0, 0, Space.Self);
+                head.transform.position += transform.TransformDirection (Vector3.up);
+                headDirections.setNewDir("left");
+                headDirections.setOldDir("down");
+                moveCatScript.SetTurnedHeadList();
+                turned = true;
+                turnAgainTimer = 0.0f;
+            }
         }
-        //Turn Up if facing right
-        else if (Input.GetKeyDown(KeyCode.UpArrow) &&  checkNewDir("right"))
+        //Turn up if facing right
+        else if (Input.GetKeyDown(KeyCode.UpArrow) &&  checkNewDir("right") && !changeFace && turnAgainTimer > 0.05f)
         {
-            head.transform.Rotate(90, 0, 0, Space.Self);
-            head.transform.position += transform.TransformDirection (Vector3.up);
-            headDirections.setNewDir("up");
-            headDirections.setOldDir("right");
-            moveCatScript.SetTurnedHeadList();
+            rotationType = 5;
+            if (headMove.getTimer() < 0.05f)
+            {
+                StartCoroutine(DelayTurn(headMove.getTimer(), headDirections));
+            }
+            else
+            {
+                head.transform.Rotate(90, 0, 0, Space.Self);
+                head.transform.position += transform.TransformDirection (Vector3.up);
+                headDirections.setNewDir("up");
+                headDirections.setOldDir("right");
+                moveCatScript.SetTurnedHeadList();
+                turned = true;
+                turnAgainTimer = 0.0f;
+            }
+            
         }
-        //Turn Up if facing left
-        else if (Input.GetKeyDown(KeyCode.UpArrow) && checkNewDir("left"))
+        //Turn up if facing left
+        else if (Input.GetKeyDown(KeyCode.UpArrow) && checkNewDir("left") && !changeFace && turnAgainTimer > 0.05f)
         {
-            head.transform.Rotate(-90, 0, 0, Space.Self);
-            head.transform.position += transform.TransformDirection (Vector3.up);
-            headDirections.setNewDir("up");
-            headDirections.setOldDir("left");
-            moveCatScript.SetTurnedHeadList();
+            rotationType = 6;
+            if (headMove.getTimer() < 0.05f)
+            {
+                StartCoroutine(DelayTurn(headMove.getTimer(), headDirections));
+            }
+            else
+            {
+                head.transform.Rotate(-90, 0, 0, Space.Self);
+                head.transform.position += transform.TransformDirection (Vector3.up);
+                headDirections.setNewDir("up");
+                headDirections.setOldDir("left");
+                moveCatScript.SetTurnedHeadList();
+                turned = true;
+                turnAgainTimer = 0.0f;
+            }
+            
         }
-        else if (Input.GetKeyDown(KeyCode.DownArrow) &&  checkNewDir("right"))
+        //Turn down if facing right
+        else if (Input.GetKeyDown(KeyCode.DownArrow) &&  checkNewDir("right") && !changeFace && turnAgainTimer > 0.05f)
         {
-            head.transform.Rotate(-90, 0, 0, Space.Self);
-            head.transform.position += transform.TransformDirection (Vector3.up);
-            headDirections.setNewDir("down");
-            headDirections.setOldDir("right");
-            moveCatScript.SetTurnedHeadList();
+            rotationType = 7;
+            if (headMove.getTimer() < 0.05f)
+            {
+                StartCoroutine(DelayTurn(headMove.getTimer(), headDirections));
+            }
+            else
+            {
+                head.transform.Rotate(-90, 0, 0, Space.Self);
+                head.transform.position += transform.TransformDirection (Vector3.up);
+                headDirections.setNewDir("down");
+                headDirections.setOldDir("right");
+                moveCatScript.SetTurnedHeadList();
+                turned = true;
+                turnAgainTimer = 0.0f;
+            }
+            
         }
-
-        else if (Input.GetKeyDown(KeyCode.DownArrow) && checkNewDir("left"))
+        //Turn down if facing left
+        else if (Input.GetKeyDown(KeyCode.DownArrow) && checkNewDir("left") && !changeFace && turnAgainTimer > 0.05f)
         {
-            head.transform.Rotate(90, 0, 0, Space.Self);
-            head.transform.position += transform.TransformDirection (Vector3.up);
-            headDirections.setNewDir("down");
-            headDirections.setOldDir("left");
-            moveCatScript.SetTurnedHeadList();
+            rotationType = 8;
+            if (headMove.getTimer() < 0.05f)
+            {
+                StartCoroutine(DelayTurn(headMove.getTimer(), headDirections));
+            }
+            else
+            {
+                head.transform.Rotate(90, 0, 0, Space.Self);
+                head.transform.position += transform.TransformDirection (Vector3.up);
+                headDirections.setNewDir("down");
+                headDirections.setOldDir("left");
+                moveCatScript.SetTurnedHeadList();
+                turned = true;
+                turnAgainTimer = 0.0f;
+            }
+            
         }
-        /*
-        else if (!checkIfDirIsChanged())
-        {
-            Debug.Log(checkIfDirIsChanged());
-            oldDir = newDir;
-        }
-        */
-    }
-    // primesc ca parametrii body-ul pe care trebuie sa il rotesc si elementul front
-    //incearca sa primesti 
+    } 
     public void TurnBody(GameObject body, ChangeDirection nextBody, ChangeDirection front, int index)
     {
         moveCatScript.SetMovedHeadElement(index);
@@ -147,243 +217,254 @@ public class ChangeDirection : Body
             //headMoveComponent.setHeadHasMoved(false);
         }
         */
+        //if the element in front of this one is the head, it takes the newDir of the head
         if (front.checkBodyType("head")) 
             {
-                //Debug.Log("primul body " + rotateCount);
                 oldDir = newDir;
-                newDir = front.getNewDir(); //pentru primul body trebuie sa iei newDir-ul de la head.
-                //Debug.Log(newDir + " primul dupa");
+                newDir = front.getNewDir();
             }
-            else 
-            {
-                //Debug.Log(newDir + " restul inainte");
-                oldDir = newDir;
-                newDir = front.getOldDir(); //in mod normal trebuie sa iei old dir de la ala din fata
-                //Debug.Log(newDir + " restul dupa");
-            }
-            
-            if (checkIfDirIsChanged()) // is true when newDir != oldDir
-            {
-                rotateCount ++;
-            }
-            
+        //if the element in front is just another body, take the oldDir of that body
+        else 
+        {
+            oldDir = newDir;
+            newDir = front.getOldDir(); 
+        }
+        
+        //if newDir != oldDir we increment the counter
+        if (checkIfDirIsChanged())
+        {
+            rotateCount ++;
+        }
+            //we only rotate when the counter is 1 if the oldDir==newDir, in the specific direction
+            //otherwise we only rotate the body if the counter is > 1,
             if (rotateCount > 0) 
             {
-                //trebuie sa fac checkolddir si checknewdir pe o componenta ChangeDirections a lui body nu asa direct
-                //ramane in if-ul asta chiar daca in inspector directia e buna
                 if (checkNewDir("right") && checkOldDir("up")) 
                 {
-                    if(rotateCount > 1)// copiaza cazul asta si la celelalte cu directii diferite dar pune rotate-ul corect
+                    if(rotateCount > 1)
                     {
-                        body.transform.Rotate(-90, 0, 0, Space.Self);
-                        rotateCount--;
+                        //if the newDir of the body behind this one is the same with our newDir, we rotate with 90 degrees in the opposite direction than normal
+                        if (nextBody.checkNewDir("right"))
+                        {
+                            body.transform.Rotate(90, 0, 0, Space.Self);
+                            rotateCount--;
+                        }
+                        else
+                        {
+                            body.transform.Rotate(-90, 0, 0, Space.Self);
+                            rotateCount--;
+                        }
+                        
                     }
-                    /*
-                    else if (bodyDirection.rotateCount == 1 && !checkIfDirIsChanged())
-                    {
-                        Debug.Log("Counter == 1:" + rotateCount);
-                        body.transform.Rotate(-90, 0, 0, Space.Self);
-                        bodyDirection.rotateCount--;
-                    }
-                    */
-                    //Debug.Log("M-am rotit la dreapta " + rotateCount);
                 }
                 else if (rotateCount == 1 && checkNewDir("right") && checkOldDir("right") && nextBody.checkNewDir("up"))
                 {
-                    //copiaza cazul asta pentru toate celelalte cazuri in care directiile sunt = si countul = 1 dar pune rotate-ul corect
-                    body.transform.Rotate(-90, 0, 0, Space.Self); //trebuie sa vad cum fac sa mearga si cand vine de sus in jos si o ia catre dreapta
-                    rotateCount--;//eventual sa verific newdir pentru elementul din spatele lui si daca e Up fac -90 daca e down fac la 90
-                }//ultimul element nu va avea un previous asa ca o sa trebuiasca sa mai fac un if in update si sa-l dau tot pe el ca previous
-                //asa o sa aiba new dir pentru elementul din spatele lui egal cu new dir-ul lui evident
-                //o sa mai fac un alt if in metoda asta in care daca new dir-ul aluia din spatele tau == cu new dirul tau si counter > 0 roteste direct
+                    body.transform.Rotate(-90, 0, 0, Space.Self);
+                    rotateCount--;
+                }
                 else if (checkNewDir("right") && checkOldDir("down"))
                 {
-                    //Debug.Log("Am facut dreapta");
-                    if(rotateCount > 1)// copiaza cazul asta si la celelalte cu directii diferite dar pune rotate-ul corect
+                    if(rotateCount > 1)
                     {
-                        body.transform.Rotate(90, 0, 0, Space.Self);
-                        rotateCount--;
+                        if (nextBody.checkNewDir("right"))
+                        {
+                            body.transform.Rotate(-90, 0, 0, Space.Self);
+                            rotateCount--;
+                        }
+                        else
+                        {
+                            body.transform.Rotate(90, 0, 0, Space.Self);
+                            rotateCount--;
+                        }
                     }
-                    //body.transform.Rotate(90, 0, 0, Space.Self);
-                    //rotateCount--;
                 }
                 else if (rotateCount == 1 && checkNewDir("right") && checkOldDir("right") && nextBody.checkNewDir("down"))
                 {
-                    //copiaza cazul asta pentru toate celelalte cazuri in care directiile sunt = si countul = 1 dar pune rotate-ul corect
-                    body.transform.Rotate(90, 0, 0, Space.Self); //trebuie sa vad cum fac sa mearga si cand vine de sus in jos si o ia catre dreapta
-                    rotateCount--;//eventual sa verific newdir pentru elementul din spatele lui si daca e Up fac -90 daca e down fac la 90
+                    body.transform.Rotate(90, 0, 0, Space.Self);
+                    rotateCount--;
                 }
                 else if (checkNewDir("left") && checkOldDir("up"))
                 {
-                    //Debug.Log("Am facut stanga");
-                    if(rotateCount > 1)// copiaza cazul asta si la celelalte cu directii diferite dar pune rotate-ul corect
+                    if(rotateCount > 1)
                     {
-                        body.transform.Rotate(90, 0, 0, Space.Self);
-                        rotateCount--;
+                        if (nextBody.checkNewDir("left"))
+                        {
+                            body.transform.Rotate(-90, 0, 0, Space.Self);
+                            rotateCount--;
+                        }
+                        else
+                        {
+                            body.transform.Rotate(90, 0, 0, Space.Self);
+                            rotateCount--;
+                        }
                     }
-                    //body.transform.Rotate(90, 0, 0, Space.Self);
-                    //rotateCount--;
                 }
                 else if (rotateCount == 1 && checkNewDir("left") && checkOldDir("left") && nextBody.checkNewDir("up"))
                 {
-                    //copiaza cazul asta pentru toate celelalte cazuri in care directiile sunt = si countul = 1 dar pune rotate-ul corect
-                    body.transform.Rotate(90, 0, 0, Space.Self); //trebuie sa vad cum fac sa mearga si cand vine de sus in jos si o ia catre dreapta
-                    rotateCount--;//eventual sa verific newdir pentru elementul din spatele lui si daca e Up fac -90 daca e down fac la 90
+                    body.transform.Rotate(90, 0, 0, Space.Self);
+                    rotateCount--;
                 }
                 else if (checkNewDir("left") && checkOldDir("down"))
                 {
-                    //Debug.Log("Am facut stanga");
-                    if(rotateCount > 1)// copiaza cazul asta si la celelalte cu directii diferite dar pune rotate-ul corect
+                    if(rotateCount > 1)
                     {
-                        body.transform.Rotate(-90, 0, 0, Space.Self);
-                        rotateCount--;
+                        if (nextBody.checkNewDir("left"))
+                        {
+                            body.transform.Rotate(90, 0, 0, Space.Self);
+                            rotateCount--;
+                        }
+                        else
+                        {
+                            body.transform.Rotate(-90, 0, 0, Space.Self);
+                            rotateCount--;
+                        }
                     }
-                    //body.transform.Rotate(-90, 0, 0, Space.Self);
-                    //rotateCount--;
                 }
                 else if (rotateCount == 1 && checkNewDir("left") && checkOldDir("left") && nextBody.checkNewDir("down"))
                 {
-                    //copiaza cazul asta pentru toate celelalte cazuri in care directiile sunt = si countul = 1 dar pune rotate-ul corect
-                    body.transform.Rotate(-90, 0, 0, Space.Self); //trebuie sa vad cum fac sa mearga si cand vine de sus in jos si o ia catre dreapta
-                    rotateCount--;//eventual sa verific newdir pentru elementul din spatele lui si daca e Up fac -90 daca e down fac la 90
+                    body.transform.Rotate(-90, 0, 0, Space.Self);
+                    rotateCount--;
                 }
                 else if (checkNewDir("up") && checkOldDir("right"))
                 {
-                    if(rotateCount > 1)// copiaza cazul asta si la celelalte cu directii diferite dar pune rotate-ul corect
+                    if(rotateCount > 1)
                     {
-                        body.transform.Rotate(90, 0, 0, Space.Self);
-                        rotateCount--;
+                        if (nextBody.checkNewDir("up"))
+                        {
+                            body.transform.Rotate(-90, 0, 0, Space.Self);
+                            rotateCount--;
+                        }
+                        else
+                        {
+                            body.transform.Rotate(90, 0, 0, Space.Self);
+                            rotateCount--;
+                        }
                     }
-                    //body.transform.Rotate(90, 0, 0, Space.Self);
-                    //rotateCount--;
                 }
                 else if (rotateCount == 1 && checkNewDir("up") && checkOldDir("up") && nextBody.checkNewDir("right"))
                 {
-                    //copiaza cazul asta pentru toate celelalte cazuri in care directiile sunt = si countul = 1 dar pune rotate-ul corect
-                    body.transform.Rotate(90, 0, 0, Space.Self); //trebuie sa vad cum fac sa mearga si cand vine de sus in jos si o ia catre dreapta
-                    rotateCount--;//eventual sa verific newdir pentru elementul din spatele lui si daca e Up fac -90 daca e down fac la 90
+                    body.transform.Rotate(90, 0, 0, Space.Self);
+                    rotateCount--;
                 }
                 else if (checkNewDir("up") && checkOldDir("left"))
                 {
-                    if(rotateCount > 1)// copiaza cazul asta si la celelalte cu directii diferite dar pune rotate-ul corect
+                    if(rotateCount > 1)
                     {
-                        body.transform.Rotate(-90, 0, 0, Space.Self);
-                        rotateCount--;
+                        if (nextBody.checkNewDir("up"))
+                        {
+                            body.transform.Rotate(90, 0, 0, Space.Self);
+                            rotateCount--;
+                        }
+                        else
+                        {
+                            body.transform.Rotate(-90, 0, 0, Space.Self);
+                            rotateCount--;
+                        }
                     }
-                    //body.transform.Rotate(-90, 0, 0, Space.Self);
-                    //rotateCount--;
                 }
                 else if (rotateCount == 1 && checkNewDir("up") && checkOldDir("up") && nextBody.checkNewDir("left"))
                 {
-                    //copiaza cazul asta pentru toate celelalte cazuri in care directiile sunt = si countul = 1 dar pune rotate-ul corect
-                    body.transform.Rotate(-90, 0, 0, Space.Self); //trebuie sa vad cum fac sa mearga si cand vine de sus in jos si o ia catre dreapta
-                    rotateCount--;//eventual sa verific newdir pentru elementul din spatele lui si daca e Up fac -90 daca e down fac la 90
+                    body.transform.Rotate(-90, 0, 0, Space.Self);
+                    rotateCount--;
                 }
                 else if (checkNewDir("down") && checkOldDir("right"))
                 {
-                    //Debug.Log("Merem Jos");
-                    if(rotateCount > 1)// copiaza cazul asta si la celelalte cu directii diferite dar pune rotate-ul corect
+                    if(rotateCount > 1)
                     {
-                        body.transform.Rotate(-90, 0, 0, Space.Self);
-                        rotateCount--;
+                        if (nextBody.checkNewDir("down"))
+                        {
+                            body.transform.Rotate(90, 0, 0, Space.Self);
+                            rotateCount--;
+                        }
+                        else
+                        {
+                            body.transform.Rotate(-90, 0, 0, Space.Self);
+                            rotateCount--;
+                        }
                     }
-                    //body.transform.Rotate(-90, 0, 0, Space.Self);
-                    //rotateCount--;
                 }
                 else if (rotateCount == 1 && checkNewDir("down") && checkOldDir("down") && nextBody.checkNewDir("right"))
                 {
-                    //copiaza cazul asta pentru toate celelalte cazuri in care directiile sunt = si countul = 1 dar pune rotate-ul corect
-                    body.transform.Rotate(-90, 0, 0, Space.Self); //trebuie sa vad cum fac sa mearga si cand vine de sus in jos si o ia catre dreapta
-                    rotateCount--;//eventual sa verific newdir pentru elementul din spatele lui si daca e Up fac -90 daca e down fac la 90
+                    body.transform.Rotate(-90, 0, 0, Space.Self);
+                    rotateCount--;
                 }
                 else if (checkNewDir("down") && checkOldDir("left"))
                 {
-                    //Debug.Log("Merem Jos");
-                    if(rotateCount > 1)// copiaza cazul asta si la celelalte cu directii diferite dar pune rotate-ul corect
+                    if(rotateCount > 1)
                     {
-                        body.transform.Rotate(90, 0, 0, Space.Self);
-                        rotateCount--;
+                        if (nextBody.checkNewDir("down"))
+                        {
+                            body.transform.Rotate(-90, 0, 0, Space.Self);
+                            rotateCount--;
+                        }
+                        else
+                        {
+                            body.transform.Rotate(90, 0, 0, Space.Self);
+                            rotateCount--;
+                        }   
                     }
-                    //body.transform.Rotate(90, 0, 0, Space.Self);
-                    //rotateCount--;
                 }
                 else if (rotateCount == 1 && checkNewDir("down") && checkOldDir("down") && nextBody.checkNewDir("left"))
                 {
-                    //copiaza cazul asta pentru toate celelalte cazuri in care directiile sunt = si countul = 1 dar pune rotate-ul corect
-                    body.transform.Rotate(90, 0, 0, Space.Self); //trebuie sa vad cum fac sa mearga si cand vine de sus in jos si o ia catre dreapta
-                    rotateCount--;//eventual sa verific newdir pentru elementul din spatele lui si daca e Up fac -90 daca e down fac la 90
+                    body.transform.Rotate(90, 0, 0, Space.Self);
+                    rotateCount--;
                 }
-                //gandeste-te cum sa il rotesti pe ultimul
-                //
-                //
             }
+            //if this is the last body element rotate it right away
             if (index == moveCatScript.cat.Count -1  && checkNewDir("right") && checkOldDir("up"))
             {
-                //Debug.Log("ULTIMUL BODY RIGHT");
-                //copiaza cazul asta pentru toate celelalte cazuri in care directiile sunt = si countul = 1 dar pune rotate-ul corect
-                body.transform.Rotate(-90, 0, 0, Space.Self); //trebuie sa vad cum fac sa mearga si cand vine de sus in jos si o ia catre dreapta
-                rotateCount--;//eventual sa verific newdir pentru elementul din spatele lui si daca e Up fac -90 daca e down fac la 90
+                body.transform.Rotate(-90, 0, 0, Space.Self);
+                rotateCount--;
             }
             else if (index == moveCatScript.cat.Count -1 && checkNewDir("right") && checkOldDir("down"))
             {
-                //copiaza cazul asta pentru toate celelalte cazuri in care directiile sunt = si countul = 1 dar pune rotate-ul corect
-                body.transform.Rotate(90, 0, 0, Space.Self); //trebuie sa vad cum fac sa mearga si cand vine de sus in jos si o ia catre dreapta
-                rotateCount--;//eventual sa verific newdir pentru elementul din spatele lui si daca e Up fac -90 daca e down fac la 90
+                body.transform.Rotate(90, 0, 0, Space.Self);
+                rotateCount--;
             }
             else if (index == moveCatScript.cat.Count -1 && checkNewDir("left") && checkOldDir("up"))
             {
-                //copiaza cazul asta pentru toate celelalte cazuri in care directiile sunt = si countul = 1 dar pune rotate-ul corect
-                body.transform.Rotate(90, 0, 0, Space.Self); //trebuie sa vad cum fac sa mearga si cand vine de sus in jos si o ia catre dreapta
-                rotateCount--;//eventual sa verific newdir pentru elementul din spatele lui si daca e Up fac -90 daca e down fac la 90
+                body.transform.Rotate(90, 0, 0, Space.Self);
+                rotateCount--;
             }
             else if (index == moveCatScript.cat.Count -1 && checkNewDir("left") && checkOldDir("down"))
             {
-                //copiaza cazul asta pentru toate celelalte cazuri in care directiile sunt = si countul = 1 dar pune rotate-ul corect
-                body.transform.Rotate(-90, 0, 0, Space.Self); //trebuie sa vad cum fac sa mearga si cand vine de sus in jos si o ia catre dreapta
-                rotateCount--;//eventual sa verific newdir pentru elementul din spatele lui si daca e Up fac -90 daca e down fac la 90
+                body.transform.Rotate(-90, 0, 0, Space.Self);
+                rotateCount--;
             }
             else if (index == moveCatScript.cat.Count -1 && checkNewDir("up") && checkOldDir("right"))
             {
-                //copiaza cazul asta pentru toate celelalte cazuri in care directiile sunt = si countul = 1 dar pune rotate-ul corect
-                body.transform.Rotate(90, 0, 0, Space.Self); //trebuie sa vad cum fac sa mearga si cand vine de sus in jos si o ia catre dreapta
-                rotateCount--;//eventual sa verific newdir pentru elementul din spatele lui si daca e Up fac -90 daca e down fac la 90
+                body.transform.Rotate(90, 0, 0, Space.Self);
+                rotateCount--;
             }
             else if (index == moveCatScript.cat.Count -1 && checkNewDir("up") && checkOldDir("left"))
             {
-                //copiaza cazul asta pentru toate celelalte cazuri in care directiile sunt = si countul = 1 dar pune rotate-ul corect
-                body.transform.Rotate(-90, 0, 0, Space.Self); //trebuie sa vad cum fac sa mearga si cand vine de sus in jos si o ia catre dreapta
-                rotateCount--;//eventual sa verific newdir pentru elementul din spatele lui si daca e Up fac -90 daca e down fac la 90
+                body.transform.Rotate(-90, 0, 0, Space.Self);
+                rotateCount--;
             }
             else if (index == moveCatScript.cat.Count -1 && checkNewDir("down") && checkOldDir("right"))
             {
-                //copiaza cazul asta pentru toate celelalte cazuri in care directiile sunt = si countul = 1 dar pune rotate-ul corect
-                body.transform.Rotate(-90, 0, 0, Space.Self); //trebuie sa vad cum fac sa mearga si cand vine de sus in jos si o ia catre dreapta
-                rotateCount--;//eventual sa verific newdir pentru elementul din spatele lui si daca e Up fac -90 daca e down fac la 90
+                body.transform.Rotate(-90, 0, 0, Space.Self);
+                rotateCount--;
             }
             else if (index == moveCatScript.cat.Count -1 && checkNewDir("down") && checkOldDir("left"))
             {
-                //copiaza cazul asta pentru toate celelalte cazuri in care directiile sunt = si countul = 1 dar pune rotate-ul corect
-                body.transform.Rotate(90, 0, 0, Space.Self); //trebuie sa vad cum fac sa mearga si cand vine de sus in jos si o ia catre dreapta
-                rotateCount--;//eventual sa verific newdir pentru elementul din spatele lui si daca e Up fac -90 daca e down fac la 90
+                body.transform.Rotate(90, 0, 0, Space.Self); 
+                rotateCount--;
             }
     }
 
     void OnTriggerEnter(Collider collision)
-    {
-        //fara transform.position nu mai e bugul de pe margine
-        //Debug.Log("Detectat coliziune");
+    {   //it sets changeFace on true when it detects a collision with an edge
+        //it also sets canTurn on false so that we can't change direction when the head is on the collider
         if (collision.gameObject.tag == "Edge" && newDir == "right")
         {
             changeFace = true;
             changeFaceFront = true;
-            //transform.position += transform.TransformDirection (Vector3.right);
-            //transform.Rotate(0, 0, -90, Space.Self);
             canTurn = false;
         }
         
         else if (collision.gameObject.tag == "Edge" && newDir == "left")
         {
-            //transform.Rotate(0, 0, -90, Space.Self);
             canTurn = false;
             changeFace = true;
             changeFaceFront = true;
@@ -391,7 +472,6 @@ public class ChangeDirection : Body
 
         else if (collision.gameObject.tag == "Edge" && newDir == "up")
         {
-            //transform.Rotate(0, 0, -90, Space.Self);
             canTurn = false;
             changeFace = true;
             changeFaceFront = true;
@@ -399,7 +479,6 @@ public class ChangeDirection : Body
 
         else if (collision.gameObject.tag == "Edge" && newDir == "down")
         {
-            //transform.Rotate(0, 0, -90, Space.Self);
             canTurn = false;
             changeFace = true;
             changeFaceFront = true;
@@ -409,9 +488,10 @@ public class ChangeDirection : Body
 
     void OnTriggerExit(Collider collision)
     {
+        //at trigger exit we set the canTurn back to true so we can change direction
+        //we also enque with the direction the head had so the camera can rotate in that direction
         if (collision.gameObject.tag == "Edge" && newDir == "right")
         {
-            //transform.Rotate(0, 0, -90, Space.Self);
             turnQ.Enqueue("right");
             canTurn = true;
             changeFace = false;
@@ -420,7 +500,6 @@ public class ChangeDirection : Body
 
         else if (collision.gameObject.tag == "Edge" && newDir == "left")
         {
-            //transform.Rotate(0, 0, -90, Space.Self);
             turnQ.Enqueue("left");
             canTurn = true;
             changeFace = false;
@@ -429,7 +508,6 @@ public class ChangeDirection : Body
 
         else if (collision.gameObject.tag == "Edge" && newDir == "up")
         {
-            //transform.Rotate(0, 0, -90, Space.Self);
             turnQ.Enqueue("up");
             canTurn = true;
             changeFace = false;
@@ -438,7 +516,6 @@ public class ChangeDirection : Body
 
         else if (collision.gameObject.tag == "Edge" && newDir == "down")
         {
-            //transform.Rotate(0, 0, -90, Space.Self);
             turnQ.Enqueue("down");
             canTurn = true;
             changeFace = false;
@@ -454,13 +531,25 @@ public class ChangeDirection : Body
     {
         return changeFace;
     }
+    public bool getTurnedHead()
+    {
+        return turned;
+    }
     public void setChangeFace(bool var)
     {
         changeFace = var;
     }
+    public void setTurnedHead(bool var)
+    {
+        turned = var;
+    }
     public bool getChangeFaceFront()
     {
         return changeFaceFront;
+    }
+    public void setChangeFaceFront(bool val)
+    {
+        changeFaceFront = val;
     }
     public bool turQNotEmpty()
     {
@@ -473,10 +562,104 @@ public class ChangeDirection : Body
             return false;
         }
     }
+    //returns the direction that the camera must rotate towards
     public string cameraRotateDirection()
     {
         string direction = turnQ.Dequeue();
         return direction;
     }
+    //this coroutine is used to delay the head rotation if the interval between the last move of the head and the head had to change direction is too small
+    IEnumerator DelayTurn(float timer, ChangeDirection headDirections)
+    {
+        yield return new WaitForSeconds(0.05f - timer);
+        switch (rotationType)
+        {
+            case 1:
+                Debug.Log(turnAgainTimer);
+                transform.Rotate(-90, 0, 0, Space.Self);
+                transform.position += transform.TransformDirection (Vector3.up);
+                headDirections.setNewDir("right");
+                headDirections.setOldDir("up");
+                moveCatScript.SetTurnedHeadList();
+                turned = true;
+                turnAgainTimer = 0.0f;
+                break;
+            case 2:
+                Debug.Log(turnAgainTimer);
+                transform.Rotate(90, 0, 0, Space.Self);
+                transform.position += transform.TransformDirection (Vector3.up);
+                headDirections.setNewDir("right");
+                headDirections.setOldDir("down");
+                moveCatScript.SetTurnedHeadList();
+                turned = true;
+                turnAgainTimer = 0.0f;
+                break;
+            case 3:
+                Debug.Log(turnAgainTimer);
+                transform.Rotate(90, 0, 0, Space.Self);
+                transform.position += transform.TransformDirection (Vector3.up);
+                headDirections.setNewDir("left");
+                headDirections.setOldDir("up");
+                moveCatScript.SetTurnedHeadList();
+                turned = true;
+                turnAgainTimer = 0.0f;
+                break;
+            case 4:
+                Debug.Log(turnAgainTimer);
+                transform.Rotate(-90, 0, 0, Space.Self);
+                transform.position += transform.TransformDirection (Vector3.up);
+                headDirections.setNewDir("left");
+                headDirections.setOldDir("down");
+                moveCatScript.SetTurnedHeadList();
+                turned = true;
+                turnAgainTimer = 0.0f;
+                break;
+            case 5:
+                Debug.Log(turnAgainTimer);
+                transform.Rotate(90, 0, 0, Space.Self);
+                transform.position += transform.TransformDirection (Vector3.up);
+                headDirections.setNewDir("up");
+                headDirections.setOldDir("right");
+                moveCatScript.SetTurnedHeadList();
+                turned = true;
+                turnAgainTimer = 0.0f;
+                break;
+            case 6:
+                Debug.Log(turnAgainTimer);
+                transform.Rotate(-90, 0, 0, Space.Self);
+                transform.position += transform.TransformDirection (Vector3.up);
+                headDirections.setNewDir("up");
+                headDirections.setOldDir("left");
+                moveCatScript.SetTurnedHeadList();
+                turned = true;
+                turnAgainTimer = 0.0f;
+                break;
+            case 7:
+                Debug.Log(turnAgainTimer);
+                transform.Rotate(-90, 0, 0, Space.Self);
+                transform.position += transform.TransformDirection (Vector3.up);
+                headDirections.setNewDir("down");
+                headDirections.setOldDir("right");
+                moveCatScript.SetTurnedHeadList();
+                turned = true;
+                turnAgainTimer = 0.0f;
+                break;
+            case 8:
+                Debug.Log(turnAgainTimer);
+                transform.Rotate(90, 0, 0, Space.Self);
+                transform.position += transform.TransformDirection (Vector3.up);
+                headDirections.setNewDir("down");
+                headDirections.setOldDir("left");
+                moveCatScript.SetTurnedHeadList();
+                turned = true;
+                turnAgainTimer = 0.0f;
+                break;
 
+            
+        }
+    }
+    private void TurnAgain()
+    {
+        turnAgainTimer += Time.deltaTime;
+    }
 }

@@ -53,18 +53,27 @@ public class MoveCat : Body
         {
             if (bodyScriptComponents[i].checkBodyType("head"))
             {
-                moveScriptComponents[i].MoveHead(cat[i],changeDirScriptComponents[i].getChangeFace(), changeDirScriptComponents[i].getNewDir());
+                moveScriptComponents[i].MoveHead(cat[i],changeDirScriptComponents[i].getChangeFace(), changeDirScriptComponents[i].getNewDir(), changeDirScriptComponents[i].getTurnedHead());
+                if (changeDirScriptComponents[i].getTurnedHead())
+                {
+                    changeDirScriptComponents[i].setTurnedHead(false);
+                }
                 if (changeDirScriptComponents[i].getCanTurn())
                 {
-                    changeDirScriptComponents[i].TurnHead(cat[i], changeDirScriptComponents[i]);
+                    changeDirScriptComponents[i].TurnHead(cat[i], changeDirScriptComponents[i], moveScriptComponents[i]);
+                }
+                if (moveScriptComponents[i].getMoved())
+                {
+                    moveScriptComponents[i].setMoved(false);
                 }
             }
             else if (bodyScriptComponents[i].checkBodyType("body"))
             {
-                moveScriptComponents[i].MoveBody(cat[i], cat[i - 1], changeDirScriptComponents[i].getChangeFace(), changeDirScriptComponents[i - 1].getChangeFaceFront(), bodyScriptComponents[i - 1].checkBodyType("body") ) ;
+                moveScriptComponents[i].MoveBody(cat[i], cat[i - 1], changeDirScriptComponents[i].getChangeFace(), changeDirScriptComponents[i - 1].getChangeFaceFront(), bodyScriptComponents[i - 1].checkBodyType("body"), changeDirScriptComponents[i], changeDirScriptComponents[i - 1] ) ;
                 if (changeDirScriptComponents[i].getChangeFace())
                 {
                     changeDirScriptComponents[i].setChangeFace(false);
+                    changeDirScriptComponents[i - 1].setChangeFaceFront(false);
                 }
                 if (headMoved[i] || headTurned[i])
                 {
