@@ -231,9 +231,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 71515683561330956}
-  - component: {fileID: 71515683561330959}
   - component: {fileID: 71515683561330958}
   - component: {fileID: 71515683561330957}
+  - component: {fileID: -6479023281424516411}
+  - component: {fileID: -845100788800100101}
+  - component: {fileID: -3963783454527664635}
   m_Layer: 0
   m_Name: BodyPart
   m_TagString: Untagged
@@ -262,22 +264,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &71515683561330959
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 71515683561330945}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05789742051d0aa46bab3f8db03c7a67, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  old_direction: 
-  new_direction: 
-  rotate_count: 0
-  on_edge: 0
 --- !u!65 &71515683561330958
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -307,6 +293,57 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-6479023281424516411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 71515683561330945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05789742051d0aa46bab3f8db03c7a67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bodyType: 
+  oldDir: 
+  newDir: 
+--- !u!114 &-845100788800100101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 71515683561330945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 389f3b171cca0394880962c60e686a44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bodyType: 
+  oldDir: 
+  newDir: 
+  timer: 0
+  cat: []
+--- !u!114 &-3963783454527664635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 71515683561330945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1d547b85fcfdf148b0822f0201a440e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bodyType: 
+  oldDir: 
+  newDir: 
+  changeFace: 0
+  changeFaceFront: 0
+  canTurn: 1
+  rotateCount: 0
 --- !u!1 &71515683627942840
 GameObject:
   m_ObjectHideFlags: 0

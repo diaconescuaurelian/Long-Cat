@@ -114,7 +114,13 @@ public class MoveCat : Body
     {
         headMoved[i] = false;
     }
-
-
+    public void AddNewScriptComponents(Body newBodyScript, Move newMoveScript, ChangeDirection newChangeDirectionScript)
+    {
+        bodyScriptComponents.Add(newBodyScript);
+        moveScriptComponents.Add(newMoveScript);
+        changeDirScriptComponents.Add(newChangeDirectionScript);
+        headMoved.Add(true);
+        headTurned.Add(true);
+    }
 
 }

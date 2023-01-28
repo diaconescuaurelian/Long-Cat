@@ -204,19 +204,6 @@ public class ChangeDirection : Body
         moveCatScript.SetTurnedHeadElement(index);
         //Debug.Log(front.getNewDir() + " Turn Body");
         //for every bodypart of the cat starting from the one after the head
-        /*
-        if (checkOldDir("just started"))
-        {
-            oldDir = front.getOldDir();
-            newDir = front.getOldDir();
-        }
-        else     // in loc de if else-ul asta fa ca atunci cand adaugi un element in lista, sa-i setezi si old dir si new dir
-        {        //atentie, seteaza old dir si new dir pe un obiect referinta la componenta ChangeDirection a lor
-            
-            //changeHeadDirection = false;
-            //headMoveComponent.setHeadHasMoved(false);
-        }
-        */
         //if the element in front of this one is the head, it takes the newDir of the head
         if (front.checkBodyType("head")) 
             {
@@ -661,5 +648,11 @@ public class ChangeDirection : Body
     private void TurnAgain()
     {
         turnAgainTimer += Time.deltaTime;
+    }
+
+    public void setDirectionForNew(ChangeDirection oldLastBody)
+    {
+        newDir = oldLastBody.getNewDir();
+        oldDir = oldLastBody.getOldDir();
     }
 }
