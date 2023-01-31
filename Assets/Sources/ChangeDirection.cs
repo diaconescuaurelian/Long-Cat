@@ -562,7 +562,6 @@ public class ChangeDirection : Body
         switch (rotationType)
         {
             case 1:
-                Debug.Log(turnAgainTimer);
                 transform.Rotate(-90, 0, 0, Space.Self);
                 transform.position += transform.TransformDirection (Vector3.up);
                 headDirections.setNewDir("right");
@@ -572,7 +571,6 @@ public class ChangeDirection : Body
                 turnAgainTimer = 0.0f;
                 break;
             case 2:
-                Debug.Log(turnAgainTimer);
                 transform.Rotate(90, 0, 0, Space.Self);
                 transform.position += transform.TransformDirection (Vector3.up);
                 headDirections.setNewDir("right");
@@ -582,7 +580,6 @@ public class ChangeDirection : Body
                 turnAgainTimer = 0.0f;
                 break;
             case 3:
-                Debug.Log(turnAgainTimer);
                 transform.Rotate(90, 0, 0, Space.Self);
                 transform.position += transform.TransformDirection (Vector3.up);
                 headDirections.setNewDir("left");
@@ -592,7 +589,6 @@ public class ChangeDirection : Body
                 turnAgainTimer = 0.0f;
                 break;
             case 4:
-                Debug.Log(turnAgainTimer);
                 transform.Rotate(-90, 0, 0, Space.Self);
                 transform.position += transform.TransformDirection (Vector3.up);
                 headDirections.setNewDir("left");
@@ -602,7 +598,6 @@ public class ChangeDirection : Body
                 turnAgainTimer = 0.0f;
                 break;
             case 5:
-                Debug.Log(turnAgainTimer);
                 transform.Rotate(90, 0, 0, Space.Self);
                 transform.position += transform.TransformDirection (Vector3.up);
                 headDirections.setNewDir("up");
@@ -612,7 +607,6 @@ public class ChangeDirection : Body
                 turnAgainTimer = 0.0f;
                 break;
             case 6:
-                Debug.Log(turnAgainTimer);
                 transform.Rotate(-90, 0, 0, Space.Self);
                 transform.position += transform.TransformDirection (Vector3.up);
                 headDirections.setNewDir("up");
@@ -622,7 +616,6 @@ public class ChangeDirection : Body
                 turnAgainTimer = 0.0f;
                 break;
             case 7:
-                Debug.Log(turnAgainTimer);
                 transform.Rotate(-90, 0, 0, Space.Self);
                 transform.position += transform.TransformDirection (Vector3.up);
                 headDirections.setNewDir("down");
@@ -632,7 +625,6 @@ public class ChangeDirection : Body
                 turnAgainTimer = 0.0f;
                 break;
             case 8:
-                Debug.Log(turnAgainTimer);
                 transform.Rotate(90, 0, 0, Space.Self);
                 transform.position += transform.TransformDirection (Vector3.up);
                 headDirections.setNewDir("down");

@@ -8,14 +8,13 @@ public class Move : Body
     private static float moveTime = 0.9f;
     private static float quickMoveTime = 0.15f;
     private int distance = -1;
-    public List<GameObject> cat = new List<GameObject>();
-    private List<Body> bodyComponents = new List<Body>();
     private GameObject catObject;
     private MoveCat moveCatScript;
     private bool moved;
-
+    private int counterChangeFace = 0;
     private bool turnBody;
     private bool positionRight;
+    private Vector3 previousBodyPosition;
 
 
     void Awake()
@@ -25,9 +24,11 @@ public class Move : Body
     }
 
     // Method that will be used to move the head in its up direction with 1 unit at every 0.9 or 0.15 if space key is pressed.
-    public void MoveHead(GameObject head, bool changeFace, string newDir, bool turned)//capul se muta bine pe alte fete, mai trebuie modificat pentru body elements
+    public void MoveHead(GameObject head, bool changeFace, string newDir, bool turned, Move next)//capul se muta bine pe alte fete, mai trebuie modificat pentru body elements
     {
         timer += Time.deltaTime;
+        //if the head turned and the head has to move in less than 0.05 seconds, reset the timer
+        //this way it will have enough time for the body parts to rotate corectly when turning to another face
         if (Input.GetKey(KeyCode.Space) && turned)
         {
             if (timer > 0.10f)
@@ -35,10 +36,6 @@ public class Move : Body
                 timer = 0.10f;
             }
         }
-        //incearca eventual sa verifici daca justTurned e true si daca e 
-        //verifica daca timerul e mai mare de o anumita valoare sau interval gen daca timerul > 0.10
-        //dar in timp ce space-ul e apasat
-        //atunci fa timerul 0.10 ca sa-i dai timp sa ia valoarea change face corecta
         if (Input.GetKey(KeyCode.Space) && timer > quickMoveTime)
         {
             //head.transform.position += transform.TransformDirection (Vector3.up);
@@ -47,7 +44,8 @@ public class Move : Body
             { 
                 head.transform.position += transform.TransformDirection (Vector3.right);
                 transform.Rotate(0, 0, -90, Space.Self);
-                //next.incrementCounter();
+                //increments the counter for the body behind the head when the head moves on another face of the cube
+                next.IncrementCounterChangeFace();
                 moved = true;
             }
             //if it doesn't turn to another face of the cube
@@ -60,16 +58,15 @@ public class Move : Body
             timer = 0;
             moveCatScript.SetMovedHeadList();
         }
+        // if the space key is not pressed the head moves at a slower speed
         else if (timer > moveTime)
         {
-            //Debug.Log("changeFace is " + changeFace);
-            //head.transform.position += transform.TransformDirection (Vector3.up);
             if (changeFace)
             { 
                 head.transform.position += transform.TransformDirection (Vector3.right);
                 transform.Rotate(0, 0, -90, Space.Self);
-                //aici incrementeaza contorul body-ului de dupa el
-                //next.incrementCounter();
+                //increments the counter for the body behind the head when the head moves on another face of the cube
+                next.IncrementCounterChangeFace();
             }
             else
             {
@@ -82,52 +79,41 @@ public class Move : Body
 
     //This method will be used to move each body part 1 unit behind a previous body part
     //The firt body part after head will allways be moved at 1 unit behind the head
-
-    // primeste scriptul body-ului curent si body-ului din spatele lui pentru a putea verifica si modifica in scriptul asta flag-urile pentru a roti pentru mutarea pe alta fata
-    public void MoveBody(GameObject body, GameObject front, bool changeFace, bool changeFaceFront, bool frontNotHead, ChangeDirection previous, ChangeDirection next)
+    public void MoveBody(GameObject body, GameObject front,  ChangeDirection previous, Move next, int index)
     {
-        /*
-        fa ceva gen
-        if (contor ==1)
-        {
-            contor++;
-        }
-        if (contor == 2)
-        {
-            //roteste 
-            transform.Rotate(0, 0, -90, Space.Self);
-            muta
-            body.transform.position = front.transform.position + front.transform.up * distance;
-            incrementeaza contorul body-ului din spatele lui
-            next.incrementCounter();
-            reseteaza propriul contor la 0
-            contor = 0;
-        }
-        if (contor == 0)
-        {
-            muta 
-        }
-        */
-        //daca elementul din fata e head, si queue-ul head-ului care isi face enqueue la intrarea pe collider nu este empty
-        
-        
-        if(changeFace)
-        {
-            //body.transform.position += transform.TransformDirection (Vector3.right);
-            transform.Rotate(0, 0, -90, Space.Self);  
-            //Debug.Log("Schimb Fata");
-        }
-        else if (changeFaceFront && frontNotHead)
-        {
-            //Debug.Log("front element type is body: " + frontNotHead);
-            body.transform.position = front.transform.position + front.transform.right * (- distance);
-        }
-        
-        else
+        if (front.transform.position != previousBodyPosition)
         {
             body.transform.position = front.transform.position + front.transform.up * distance;
+            //if the current body is the last one rotate it if the counter is 1, that is at the same time with the one in fron of him
+            if (index == moveCatScript.cat.Count - 1 && counterChangeFace == 1)
+            {
+                transform.Rotate(0, 0, -90, Space.Self);
+                counterChangeFace = 0;
+            }
+            //if the current body is not the last one, increment the counter if it's one, and rotate it if it's 2
+            else
+            {
+                if (counterChangeFace ==1)
+                {
+                    counterChangeFace++;
+                }
+                else if (counterChangeFace == 2)
+                {
+                     
+                    transform.Rotate(0, 0, -90, Space.Self);
+                    //muta
+                    //incrementeaza contorul body-ului din spatele lui
+                    if (index < moveCatScript.cat.Count - 1)
+                    {
+                        next.IncrementCounterChangeFace();
+                    }
+                    //reseteaza propriul contor la 0
+                    counterChangeFace = 0;
+                }
+            }
+            
+            previousBodyPosition = front.transform.position;
         }
-        
     }
 
     public bool getMoved()
@@ -142,6 +128,13 @@ public class Move : Body
     {
         return timer;
     }
-
+    public void IncrementCounterChangeFace()
+    {
+        counterChangeFace++;
+    }
+    public void setPreviousBodyPosition(Vector3 prevPosition)
+    {
+        previousBodyPosition = prevPosition;
+    }
     
 }

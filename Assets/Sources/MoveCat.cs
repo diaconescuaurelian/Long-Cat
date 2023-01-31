@@ -35,6 +35,7 @@ public class MoveCat : Body
             {
                 bodyScriptComponents[i].SetBodyType("body");
                 changeDirScriptComponents[i].SetBodyType("body");
+                moveScriptComponents[i].setPreviousBodyPosition(cat[i - 1].transform.position);
             }
             changeDirScriptComponents[i].setNewDir("up");
             changeDirScriptComponents[i].setOldDir("up");
@@ -53,7 +54,7 @@ public class MoveCat : Body
         {
             if (bodyScriptComponents[i].checkBodyType("head"))
             {
-                moveScriptComponents[i].MoveHead(cat[i],changeDirScriptComponents[i].getChangeFace(), changeDirScriptComponents[i].getNewDir(), changeDirScriptComponents[i].getTurnedHead());
+                moveScriptComponents[i].MoveHead(cat[i],changeDirScriptComponents[i].getChangeFace(), changeDirScriptComponents[i].getNewDir(), changeDirScriptComponents[i].getTurnedHead(), moveScriptComponents[i + 1]);
                 if (changeDirScriptComponents[i].getTurnedHead())
                 {
                     changeDirScriptComponents[i].setTurnedHead(false);
@@ -69,7 +70,14 @@ public class MoveCat : Body
             }
             else if (bodyScriptComponents[i].checkBodyType("body"))
             {
-                moveScriptComponents[i].MoveBody(cat[i], cat[i - 1], changeDirScriptComponents[i].getChangeFace(), changeDirScriptComponents[i - 1].getChangeFaceFront(), bodyScriptComponents[i - 1].checkBodyType("body"), changeDirScriptComponents[i], changeDirScriptComponents[i - 1] ) ;
+                if (i < cat.Count - 1)
+                {
+                    moveScriptComponents[i].MoveBody(cat[i], cat[i - 1], changeDirScriptComponents[i], moveScriptComponents[i + 1], i) ;
+                }
+                else if (i == cat.Count - 1)
+                {
+                    moveScriptComponents[i].MoveBody(cat[i], cat[i - 1],  changeDirScriptComponents[i], moveScriptComponents[i], i) ;
+                }
                 if (changeDirScriptComponents[i].getChangeFace())
                 {
                     changeDirScriptComponents[i].setChangeFace(false);

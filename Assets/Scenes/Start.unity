@@ -816,7 +816,6 @@ MonoBehaviour:
   oldDir: just started
   newDir: 
   timer: 0
-  cat: []
 --- !u!1 &707038229
 GameObject:
   m_ObjectHideFlags: 0
@@ -1123,7 +1122,6 @@ MonoBehaviour:
   oldDir: just started
   newDir: 
   timer: 0
-  cat: []
 --- !u!1 &1186330995
 GameObject:
   m_ObjectHideFlags: 0
@@ -1136,7 +1134,6 @@ GameObject:
   - component: {fileID: 1186330999}
   - component: {fileID: 1186330998}
   - component: {fileID: 1186330997}
-  - component: {fileID: 1186330996}
   - component: {fileID: 1186331001}
   m_Layer: 0
   m_Name: Cylinder
@@ -1145,19 +1142,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!114 &1186330996
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1186330995}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01e0119096285ec49b5b5bc8c7900ed5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveInterval: 1
 --- !u!136 &1186330997
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1649,7 +1633,6 @@ MonoBehaviour:
   oldDir: just started
   newDir: 
   timer: 0
-  cat: []
 --- !u!114 &1661708758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1685,7 +1668,6 @@ MonoBehaviour:
   oldDir: just started
   newDir: 
   timer: 0
-  cat: []
 --- !u!1 &1719761571
 GameObject:
   m_ObjectHideFlags: 0
@@ -2141,7 +2123,6 @@ GameObject:
   - component: {fileID: 1922335673}
   - component: {fileID: 1922335675}
   - component: {fileID: 1922335676}
-  - component: {fileID: 1922335677}
   - component: {fileID: 1922335678}
   m_Layer: 0
   m_Name: Head
@@ -2274,7 +2255,6 @@ MonoBehaviour:
   oldDir: just started
   newDir: 
   timer: 0
-  cat: []
 --- !u!114 &1922335675
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2309,22 +2289,6 @@ MonoBehaviour:
   changeFaceFront: 0
   canTurn: 1
   rotateCount: 0
---- !u!114 &1922335677
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1922335665}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6decbced773a7ce468025f8a262d25a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bodyType: 
-  oldDir: 
-  newDir: 
-  cat: []
 --- !u!114 &1922335678
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2426,7 +2390,6 @@ MonoBehaviour:
   oldDir: just started
   newDir: 
   timer: 0
-  cat: []
 --- !u!114 &1941653488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2567,7 +2530,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2084472714}
-  - component: {fileID: 2084472715}
   - component: {fileID: 2084472716}
   m_Layer: 0
   m_Name: Cat
@@ -2598,18 +2560,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2084472715
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2084472713}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70e0da39bef238446902ab56a00c1f29, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2084472716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2649,7 +2599,6 @@ MonoBehaviour:
   oldDir: just started
   newDir: 
   timer: 0
-  cat: []
 --- !u!114 &2128779379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6475,7 +6424,6 @@ MonoBehaviour:
   oldDir: 
   newDir: 
   timer: 0
-  cat: []
 --- !u!114 &8378271247844068618
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6492,7 +6440,6 @@ MonoBehaviour:
   oldDir: 
   newDir: 
   timer: 0
-  cat: []
 --- !u!114 &8378271247955624059
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6509,7 +6456,6 @@ MonoBehaviour:
   oldDir: 
   newDir: 
   timer: 0
-  cat: []
 --- !u!114 &8378271248226042513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6526,7 +6472,6 @@ MonoBehaviour:
   oldDir: 
   newDir: 
   timer: 0
-  cat: []
 --- !u!114 &8378271248513808210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6543,7 +6488,6 @@ MonoBehaviour:
   oldDir: 
   newDir: 
   timer: 0
-  cat: []
 --- !u!114 &8411468932839077405
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6560,4 +6504,3 @@ MonoBehaviour:
   oldDir: 
   newDir: 
   timer: 0
-  cat: []
