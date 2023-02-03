@@ -14,8 +14,7 @@ public class Body : MonoBehaviour
     }
     void Update()
     {
-        //on_edge = false;
-        //MoveBody();
+        
     }
 
     public void setNewDir(string dir)
@@ -78,59 +77,4 @@ public class Body : MonoBehaviour
             return false;
         }
     }
-    
-
-    /*
-    void OnTriggerEnter(Collider collision)
-    {
-        if (collision.gameObject.tag == "Edge" && new_direction == "right")
-        {
-            Debug.Log("Coliziune  " + new_direction);
-            transform.Rotate(0, 0, -90, Space.Self);
-            //transform.position += transform.TransformDirection (Vector3.up);
-            on_edge = true;
-            //on_edge.Enqueue("right");
-            //transform.position += transform.TransformDirection (Vector3.up);
-        }
-        
-        else if (collision.gameObject.tag == "Edge" && new_direction == "left")
-        {
-            Debug.Log("Coliziune  " + new_direction);
-            transform.Rotate(0, 0, -90, Space.Self);
-            //transform.position += transform.TransformDirection (Vector3.up);
-            on_edge = true;
-            //on_edge.Enqueue("left");
-            //transform.position += transform.TransformDirection (Vector3.up);
-        }
-
-        if (collision.gameObject.tag == "Edge" && new_direction == "up")
-        {
-            Debug.Log("Coliziune  " + new_direction);
-            transform.Rotate(0, 0, -90, Space.Self);
-            //transform.position += transform.TransformDirection (Vector3.up);
-            on_edge = true;
-            //on_edge.Enqueue("up");
-            //transform.position += transform.TransformDirection (Vector3.up);
-        }
-
-        else if (collision.gameObject.tag == "Edge" && new_direction == "down")
-        {
-            Debug.Log("Coliziune  " + new_direction);
-            transform.Rotate(0, 0, -90, Space.Self);
-            //transform.position += transform.TransformDirection (Vector3.up);
-            on_edge = true;
-            //on_edge.Enqueue("down");
-            //transform.position += transform.TransformDirection (Vector3.up);
-        }
-    }
-
-    void OnTriggerExit(Collider collision)
-    {
-         if (collision.gameObject.tag == "Edge")
-         {
-            on_edge = false;
-         }
-    }
-
-    */
 }

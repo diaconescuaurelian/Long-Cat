@@ -15,6 +15,11 @@ public class Move : Body
     private bool turnBody;
     private bool positionRight;
     private Vector3 previousBodyPosition;
+    Transform curveRight;
+    Transform curveLeft;
+    Transform curveFace;
+    Transform standard;
+    Transform tail;
 
 
     void Awake()
@@ -84,6 +89,20 @@ public class Move : Body
         if (front.transform.position != previousBodyPosition)
         {
             body.transform.position = front.transform.position + front.transform.up * distance;
+            if (index < moveCatScript.cat.Count - 1)
+            {
+                curveRight = transform.Find("CatCurveRight");
+                curveRight.gameObject.SetActive(false);
+                curveLeft = transform.Find("CatCurveLeft");
+                curveLeft.gameObject.SetActive(false);
+                curveFace = transform.Find("CatCurveFace");
+                curveFace.gameObject.SetActive(false);
+                standard = transform.Find("BodyPartStandard");
+                standard.gameObject.SetActive(true);
+                tail = transform.Find("CatTail");
+                tail.gameObject.SetActive(false);
+            }
+            
             //if the current body is the last one rotate it if the counter is 1, that is at the same time with the one in fron of him
             if (index == moveCatScript.cat.Count - 1 && counterChangeFace == 1)
             {
@@ -96,10 +115,23 @@ public class Move : Body
                 if (counterChangeFace ==1)
                 {
                     counterChangeFace++;
+                    if (index < moveCatScript.cat.Count - 1)
+                    {
+                        curveRight = transform.Find("CatCurveRight");
+                        curveRight.gameObject.SetActive(false);
+                        curveLeft = transform.Find("CatCurveLeft");
+                        curveLeft.gameObject.SetActive(false);
+                        curveFace = transform.Find("CatCurveFace");
+                        curveFace.gameObject.SetActive(true);
+                        standard = transform.Find("BodyPartStandard");
+                        standard.gameObject.SetActive(false);
+                        tail = transform.Find("CatTail");
+                        tail.gameObject.SetActive(false);
+                    }
                 }
                 else if (counterChangeFace == 2)
                 {
-                     
+                    
                     transform.Rotate(0, 0, -90, Space.Self);
                     //muta
                     //incrementeaza contorul body-ului din spatele lui

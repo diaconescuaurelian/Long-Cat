@@ -16,6 +16,12 @@ public class EatFood : MonoBehaviour
     Body bodyScript;
     Move moveScript;
     private int last;
+    
+    Transform curveRight;
+    Transform curveLeft;
+    Transform curveFace;
+    Transform standard;
+    Transform tail;
     // Start is called before the first frame update
     void Awake()
     {
@@ -33,6 +39,7 @@ public class EatFood : MonoBehaviour
     void Update()
     {
         food = GameObject.FindGameObjectWithTag("Food");
+        ChangePrefab();
     }
     void OnTriggerEnter(Collider collision)
     {
@@ -57,17 +64,32 @@ public class EatFood : MonoBehaviour
             catScript.cat.Add(newBody);
             //adding its script components to the coresponding lists
             catScript.AddNewScriptComponents(bodyScript, moveScript,newBodyChangeDirection);
+            curveRight = catScript.cat[last].transform.Find("CatCurveRight");
+            curveRight.gameObject.SetActive(false);
+            curveLeft = catScript.cat[last].transform.Find("CatCurveLeft");
+            curveLeft.gameObject.SetActive(false);
+            curveFace = catScript.cat[last].transform.Find("CatCurveFace");
+            curveFace.gameObject.SetActive(false);
+            standard = catScript.cat[last].transform.Find("BodyPartStandard");
+            standard.gameObject.SetActive(true);
+            tail = catScript.cat[last].transform.Find("CatTail");
+            tail.gameObject.SetActive(false);
         }
     }
-    //se mai intampla uneori sa se strice sarpele
-    //nu se strica decat la ultimul element ceea ce ma face sa cred ca trebuie sa se seteze orientarea gresit
-    //imi vin in minte doua modalitati sa repar asta.
-    //1 sa verific daca e instantiat pe un collider
-    //2 cand refac modul in care se schimba un body pe o alta fata sa tin cont si daca un element e nou instantiat
-    //sau sa fac astfel incat ultimul element sa primeasca automat rotatia elementului din fata lui
-    //Sigur 100% nu e de la mutat aiurea cand head-ul isi schimba directia. Cel mai Probabil are legatura cu faptul ca nu ia corect rotatia elementului din fata lui.
-    //Mai intai o sa incerc noua metoda de schimbare pe o alta fata, dupa care o sa verific daca se mai intampla.
-    //daca se intampla in continuareo sa fac ca daca penultimul element se roteste pe o alta fata, sa se roteasca si ultimul, care la momentul ala ar fi pe collider.
+    public void ChangePrefab()
+    {
+        int index = catScript.cat.Count - 1;
+        curveRight = catScript.cat[index].transform.Find("CatCurveRight");
+        curveRight.gameObject.SetActive(false);
+        curveLeft = catScript.cat[index].transform.Find("CatCurveLeft");
+        curveLeft.gameObject.SetActive(false);
+        curveFace = catScript.cat[index].transform.Find("CatCurveFace");
+        curveFace.gameObject.SetActive(false);
+        standard = catScript.cat[index].transform.Find("BodyPartStandard");
+        standard.gameObject.SetActive(false);
+        tail = catScript.cat[index].transform.Find("CatTail");
+        tail.gameObject.SetActive(true);
+    }
 
     
 }

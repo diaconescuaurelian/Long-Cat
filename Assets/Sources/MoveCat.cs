@@ -130,5 +130,9 @@ public class MoveCat : Body
         headMoved.Add(true);
         headTurned.Add(true);
     }
+    public ChangeDirection GetChangeDirectionScriptComponentElement(int index)
+    {
+        return changeDirScriptComponents[index];
+    }
 
 }
