@@ -97,45 +97,103 @@ public class Grid : MonoBehaviour
         
     }
 
-    public void SpawnFood()
+    public void SpawnFood()//mai trebuie sa verifici sa nu se instantieze peste un obstacol sau peste un element de body
     {
         // mai trebuie sa verific daca sunt coliziuni inainte sa spawnez
         int randFace = Random.Range(1, 7);
-        if (randFace == 1)
+        Vector3 position = Vector3.zero;
+        switch (randFace)
         {
-            int randi = Random.Range(0, 16);
-            int randj = Random.Range(0, 16);
-            Instantiate(food, grid1[randi, randj], Quaternion.identity);
+            case 1:
+                int randi = Random.Range(0, 16);
+                int randj = Random.Range(0, 16);
+                position = grid1[randi, randj];
+                break;
+            case 2:
+                randi = Random.Range(0, 16);
+                randj = Random.Range(0, 16);
+                position = grid2[randi, randj];
+                break;
+            case 3:
+                randi = Random.Range(0, 16);
+                randj = Random.Range(0, 16);
+                position = grid3[randi, randj];
+                break;
+            case 4:
+                randi = Random.Range(0, 16);
+                randj = Random.Range(0, 16);
+                position = grid4[randi, randj];
+                break;
+            case 5:
+                randi = Random.Range(0, 16);
+                randj = Random.Range(0, 16);
+                position = grid5[randi, randj];
+                break;
+            case 6:
+                randi = Random.Range(0, 16);
+                randj = Random.Range(0, 16);
+                position = grid6[randi, randj];
+                break;
         }
-        else if (randFace == 2)
+        Collider[] colliders = Physics.OverlapSphere(position, 0.1f);
+        while (colliders.Length > 0)
         {
-            int randi = Random.Range(0, 16);
-            int randj = Random.Range(0, 16);
-            Instantiate(food, grid2[randi, randj], Quaternion.identity);
+            randFace = Random.Range(1, 7);
+            switch (randFace)
+            {
+                case 1:
+                    int randi = Random.Range(0, 16);
+                    int randj = Random.Range(0, 16);
+                    position = grid1[randi, randj];
+                    break;
+                case 2:
+                    randi = Random.Range(0, 16);
+                    randj = Random.Range(0, 16);
+                    position = grid2[randi, randj];
+                    break;
+                case 3:
+                    randi = Random.Range(0, 16);
+                    randj = Random.Range(0, 16);
+                    position = grid3[randi, randj];
+                    break;
+                case 4:
+                    randi = Random.Range(0, 16);
+                    randj = Random.Range(0, 16);
+                    position = grid4[randi, randj];
+                    break;
+                case 5:
+                    randi = Random.Range(0, 16);
+                    randj = Random.Range(0, 16);
+                    position = grid5[randi, randj];
+                    break;
+                case 6:
+                    randi = Random.Range(0, 16);
+                    randj = Random.Range(0, 16);
+                    position = grid6[randi, randj];
+                    break;
+            }
+            colliders = Physics.OverlapSphere(position, 0.1f);
         }
-        else if (randFace == 3)
+        switch (randFace)
         {
-            int randi = Random.Range(0, 16);
-            int randj = Random.Range(0, 16);
-            Instantiate(food, grid3[randi, randj], Quaternion.identity);
-        }
-        else if (randFace == 4)
-        {
-            int randi = Random.Range(0, 16);
-            int randj = Random.Range(0, 16);
-            Instantiate(food, grid4[randi, randj], Quaternion.identity);
-        }
-        else if (randFace == 5)
-        {
-            int randi = Random.Range(0, 16);
-            int randj = Random.Range(0, 16);
-            Instantiate(food, grid5[randi, randj], Quaternion.identity);
-        }
-        else
-        {
-            int randi = Random.Range(0, 16);
-            int randj = Random.Range(0, 16);
-            Instantiate(food, grid6[randi, randj], Quaternion.identity);
+            case 1:
+                Instantiate(food, position, Quaternion.identity);
+                break;
+            case 2:
+                Instantiate(food, position, Quaternion.Euler(0, -90, 0));
+                break;
+            case 3:
+                Instantiate(food, position, Quaternion.Euler(0, 180, 0));
+                break;
+            case 4:
+                Instantiate(food, position, Quaternion.Euler(0, 90, 0));
+                break;
+            case 5:
+                Instantiate(food, position, Quaternion.Euler(0, 0, -90));
+                break;
+            case 6:
+                Instantiate(food, position, Quaternion.Euler(0, 0, 90));
+                break;
         }
     }
 }

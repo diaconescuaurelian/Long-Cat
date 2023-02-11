@@ -11,6 +11,9 @@ TagManager:
   - LongCat
   - FoodSpawner
   - Obstacle
+  - Score
+  - Title
+  - Highscore
   layers:
   - Default
   - TransparentFX

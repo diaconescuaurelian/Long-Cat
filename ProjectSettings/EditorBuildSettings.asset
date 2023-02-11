@@ -4,5 +4,44 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/StartMenu.unity
+    guid: c236f2ac9ada2dd439fa64f7aaf8628c
+  - enabled: 1
+    path: Assets/Scenes/Level1.unity
+    guid: ab248e6ecdbf99e4fb1be91bb525fac4
+  - enabled: 1
+    path: Assets/Scenes/Level2.unity
+    guid: 130545c7f8459774badcdb170121f887
+  - enabled: 1
+    path: Assets/Scenes/Level3.unity
+    guid: 4a8c84adb0e1de44388a6dc54eb30901
+  - enabled: 1
+    path: Assets/Scenes/Level4.unity
+    guid: 567ba5bd0c54515479d8a362f0fb77a4
+  - enabled: 1
+    path: Assets/Scenes/Level5.unity
+    guid: 9038678639615394cae776e2b9ea14f6
+  - enabled: 1
+    path: Assets/Scenes/Level6.unity
+    guid: 10a1411ed3ea1274185084a592c788ea
+  - enabled: 1
+    path: Assets/Scenes/Level7.unity
+    guid: 2cb4e1f2681962846a47c09e66559a2e
+  - enabled: 1
+    path: Assets/Scenes/Level8.unity
+    guid: b00f965445ab7184faf96bd0c72751d3
+  - enabled: 1
+    path: Assets/Scenes/Level9.unity
+    guid: 417a5a1c35a751442832cc1ca5e4406e
+  - enabled: 1
+    path: Assets/Scenes/Level10.unity
+    guid: 9283946e459b47f428ace49f748249bf
+  - enabled: 1
+    path: Assets/Scenes/Endless.unity
+    guid: 6148160dd1b26a943bfd3fc3068f6a6f
+  - enabled: 1
+    path: Assets/Scenes/EndMenu.unity
+    guid: abe5687ee8322424a8abf4de84eb19b3
   m_configObjects: {}

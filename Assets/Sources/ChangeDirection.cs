@@ -7,12 +7,12 @@ public class ChangeDirection : Body
 {
     private GameObject catObject;
     private MoveCat moveCatScript;
-    public bool changeFace;
-    public bool changeFaceFront;
+    private bool changeFace;
+    private bool changeFaceFront;
     public bool canTurn = true;
-    public Queue<string> turnQ = new Queue<string>();
+    private Queue<string> turnQ = new Queue<string>();
     private bool turned = false;
-    public int rotateCount = 0;
+    private int rotateCount = 0;
     private int rotationType;
     private float turnAgainTimer = 0.0f;
     Transform curveRight;
@@ -41,7 +41,7 @@ public class ChangeDirection : Body
     
     public void TurnHead(GameObject head, ChangeDirection headDirections, Move headMove) 
     {   //mai verifica la TurnHead cu delay daca se afla pe collider sa nu mai faca deloc rotirea
-        if (Input.GetKeyDown(KeyCode.RightArrow) && checkNewDir("up") && !changeFace && turnAgainTimer > 0.05f)
+        if (Input.GetKeyDown(KeyCode.RightArrow) && checkNewDir("up") && !changeFace && turnAgainTimer > 0.01f)
         {
             rotationType = 1;
             //turn the head only if enough time has passed since the last time the head moved
@@ -65,7 +65,7 @@ public class ChangeDirection : Body
             
         }
         //Turn right if facing down
-        else if (Input.GetKeyDown(KeyCode.RightArrow) && checkNewDir("down") && !changeFace && turnAgainTimer > 0.05f)
+        else if (Input.GetKeyDown(KeyCode.RightArrow) && checkNewDir("down") && !changeFace && turnAgainTimer > 0.01f)
         {
             rotationType = 2;
             if (headMove.getTimer() < 0.05f)
@@ -85,7 +85,7 @@ public class ChangeDirection : Body
             
         }
         //Turn left if facing up
-        else if (Input.GetKeyDown(KeyCode.LeftArrow)  && checkNewDir("up") && !changeFace && turnAgainTimer > 0.05f)
+        else if (Input.GetKeyDown(KeyCode.LeftArrow)  && checkNewDir("up") && !changeFace && turnAgainTimer > 0.01f)
         {
             rotationType = 3;
             if ( headMove.getTimer() < 0.05f)
@@ -104,7 +104,7 @@ public class ChangeDirection : Body
             }
         }
         //Turn left if facing down
-        else if (Input.GetKeyDown(KeyCode.LeftArrow) && checkNewDir("down") && !changeFace && turnAgainTimer > 0.05f)
+        else if (Input.GetKeyDown(KeyCode.LeftArrow) && checkNewDir("down") && !changeFace && turnAgainTimer > 0.01f)
         {
             rotationType = 4;
             if ( headMove.getTimer() < 0.05f)
@@ -123,7 +123,7 @@ public class ChangeDirection : Body
             }
         }
         //Turn up if facing right
-        else if (Input.GetKeyDown(KeyCode.UpArrow) &&  checkNewDir("right") && !changeFace && turnAgainTimer > 0.05f)
+        else if (Input.GetKeyDown(KeyCode.UpArrow) &&  checkNewDir("right") && !changeFace && turnAgainTimer > 0.01f)
         {
             rotationType = 5;
             if (headMove.getTimer() < 0.05f)
@@ -143,7 +143,7 @@ public class ChangeDirection : Body
             
         }
         //Turn up if facing left
-        else if (Input.GetKeyDown(KeyCode.UpArrow) && checkNewDir("left") && !changeFace && turnAgainTimer > 0.05f)
+        else if (Input.GetKeyDown(KeyCode.UpArrow) && checkNewDir("left") && !changeFace && turnAgainTimer > 0.01f)
         {
             rotationType = 6;
             if (headMove.getTimer() < 0.05f)
@@ -163,7 +163,7 @@ public class ChangeDirection : Body
             
         }
         //Turn down if facing right
-        else if (Input.GetKeyDown(KeyCode.DownArrow) &&  checkNewDir("right") && !changeFace && turnAgainTimer > 0.05f)
+        else if (Input.GetKeyDown(KeyCode.DownArrow) &&  checkNewDir("right") && !changeFace && turnAgainTimer > 0.01f)
         {
             rotationType = 7;
             if (headMove.getTimer() < 0.05f)
@@ -183,7 +183,7 @@ public class ChangeDirection : Body
             
         }
         //Turn down if facing left
-        else if (Input.GetKeyDown(KeyCode.DownArrow) && checkNewDir("left") && !changeFace && turnAgainTimer > 0.05f)
+        else if (Input.GetKeyDown(KeyCode.DownArrow) && checkNewDir("left") && !changeFace && turnAgainTimer > 0.01f)
         {
             rotationType = 8;
             if (headMove.getTimer() < 0.05f)
@@ -233,16 +233,20 @@ public class ChangeDirection : Body
             {
                 if (checkNewDir("right") && checkOldDir("up")) 
                 {
-                    curveRight = transform.Find("CatCurveRight");
-                    curveRight.gameObject.SetActive(true);
-                    curveLeft = transform.Find("CatCurveLeft");
-                    curveLeft.gameObject.SetActive(false);
-                    curveFace = transform.Find("CatCurveFace");
-                    curveFace.gameObject.SetActive(false);
-                    standard = transform.Find("BodyPartStandard");
-                    standard.gameObject.SetActive(false);
-                    tail = transform.Find("CatTail");
-                    tail.gameObject.SetActive(false);
+                    if (index < moveCatScript.cat.Count - 1)
+                    {
+                        curveRight = transform.Find("CatCurveRight");
+                        curveRight.gameObject.SetActive(true);
+                        curveLeft = transform.Find("CatCurveLeft");
+                        curveLeft.gameObject.SetActive(false);
+                        curveFace = transform.Find("CatCurveFace");
+                        curveFace.gameObject.SetActive(false);
+                        standard = transform.Find("BodyPartStandard");
+                        standard.gameObject.SetActive(false);
+                        tail = transform.Find("CatTail");
+                        tail.gameObject.SetActive(false);
+                    }
+                    
                     if(rotateCount > 1)
                     {
                         //if the newDir of the body behind this one is the same with our newDir, we rotate with 90 degrees in the opposite direction than normal
@@ -266,16 +270,20 @@ public class ChangeDirection : Body
                 }
                 else if (checkNewDir("right") && checkOldDir("down"))
                 {
-                    curveRight = transform.Find("CatCurveRight");
-                    curveRight.gameObject.SetActive(false);
-                    curveLeft = transform.Find("CatCurveLeft");
-                    curveLeft.gameObject.SetActive(true);
-                    curveFace = transform.Find("CatCurveFace");
-                    curveFace.gameObject.SetActive(false);
-                    standard = transform.Find("BodyPartStandard");
-                    standard.gameObject.SetActive(false);
-                    tail = transform.Find("CatTail");
-                    tail.gameObject.SetActive(false);
+                    if (index < moveCatScript.cat.Count - 1)
+                    {
+                        curveRight = transform.Find("CatCurveRight");
+                        curveRight.gameObject.SetActive(false);
+                        curveLeft = transform.Find("CatCurveLeft");
+                        curveLeft.gameObject.SetActive(true);
+                        curveFace = transform.Find("CatCurveFace");
+                        curveFace.gameObject.SetActive(false);
+                        standard = transform.Find("BodyPartStandard");
+                        standard.gameObject.SetActive(false);
+                        tail = transform.Find("CatTail");
+                        tail.gameObject.SetActive(false);
+                    }
+                    
                     if(rotateCount > 1)
                     {
                         if (nextBody.checkNewDir("right"))
@@ -297,16 +305,20 @@ public class ChangeDirection : Body
                 }
                 else if (checkNewDir("left") && checkOldDir("up"))
                 {
-                    curveRight = transform.Find("CatCurveRight");
-                    curveRight.gameObject.SetActive(false);
-                    curveLeft = transform.Find("CatCurveLeft");
-                    curveLeft.gameObject.SetActive(true);
-                    curveFace = transform.Find("CatCurveFace");
-                    curveFace.gameObject.SetActive(false);
-                    standard = transform.Find("BodyPartStandard");
-                    standard.gameObject.SetActive(false);
-                    tail = transform.Find("CatTail");
-                    tail.gameObject.SetActive(false);
+                    if (index < moveCatScript.cat.Count - 1)
+                    {
+                        curveRight = transform.Find("CatCurveRight");
+                        curveRight.gameObject.SetActive(false);
+                        curveLeft = transform.Find("CatCurveLeft");
+                        curveLeft.gameObject.SetActive(true);
+                        curveFace = transform.Find("CatCurveFace");
+                        curveFace.gameObject.SetActive(false);
+                        standard = transform.Find("BodyPartStandard");
+                        standard.gameObject.SetActive(false);
+                        tail = transform.Find("CatTail");
+                        tail.gameObject.SetActive(false);
+                    }
+                    
                     if(rotateCount > 1)
                     {
                         if (nextBody.checkNewDir("left"))
@@ -328,16 +340,20 @@ public class ChangeDirection : Body
                 }
                 else if (checkNewDir("left") && checkOldDir("down"))
                 {
-                    curveRight = transform.Find("CatCurveRight");
-                    curveRight.gameObject.SetActive(true);
-                    curveLeft = transform.Find("CatCurveLeft");
-                    curveLeft.gameObject.SetActive(false);
-                    curveFace = transform.Find("CatCurveFace");
-                    curveFace.gameObject.SetActive(false);
-                    standard = transform.Find("BodyPartStandard");
-                    standard.gameObject.SetActive(false);
-                    tail = transform.Find("CatTail");
-                    tail.gameObject.SetActive(false);
+                    if (index < moveCatScript.cat.Count - 1)
+                    {
+                        curveRight = transform.Find("CatCurveRight");
+                        curveRight.gameObject.SetActive(true);
+                        curveLeft = transform.Find("CatCurveLeft");
+                        curveLeft.gameObject.SetActive(false);
+                        curveFace = transform.Find("CatCurveFace");
+                        curveFace.gameObject.SetActive(false);
+                        standard = transform.Find("BodyPartStandard");
+                        standard.gameObject.SetActive(false);
+                        tail = transform.Find("CatTail");
+                        tail.gameObject.SetActive(false);
+                    }
+                    
                     if(rotateCount > 1)
                     {
                         if (nextBody.checkNewDir("left"))
@@ -359,16 +375,20 @@ public class ChangeDirection : Body
                 }
                 else if (checkNewDir("up") && checkOldDir("right"))
                 {
-                    curveRight = transform.Find("CatCurveRight");
-                    curveRight.gameObject.SetActive(false);
-                    curveLeft = transform.Find("CatCurveLeft");
-                    curveLeft.gameObject.SetActive(true);
-                    curveFace = transform.Find("CatCurveFace");
-                    curveFace.gameObject.SetActive(false);
-                    standard = transform.Find("BodyPartStandard");
-                    standard.gameObject.SetActive(false);
-                    tail = transform.Find("CatTail");
-                    tail.gameObject.SetActive(false);
+                    if (index < moveCatScript.cat.Count - 1)
+                    {
+                        curveRight = transform.Find("CatCurveRight");
+                        curveRight.gameObject.SetActive(false);
+                        curveLeft = transform.Find("CatCurveLeft");
+                        curveLeft.gameObject.SetActive(true);
+                        curveFace = transform.Find("CatCurveFace");
+                        curveFace.gameObject.SetActive(false);
+                        standard = transform.Find("BodyPartStandard");
+                        standard.gameObject.SetActive(false);
+                        tail = transform.Find("CatTail");
+                        tail.gameObject.SetActive(false);
+                    }
+                    
                     if(rotateCount > 1)
                     {
                         if (nextBody.checkNewDir("up"))
@@ -390,16 +410,20 @@ public class ChangeDirection : Body
                 }
                 else if (checkNewDir("up") && checkOldDir("left"))
                 {
-                    curveRight = transform.Find("CatCurveRight");
-                    curveRight.gameObject.SetActive(true);
-                    curveLeft = transform.Find("CatCurveLeft");
-                    curveLeft.gameObject.SetActive(false);
-                    curveFace = transform.Find("CatCurveFace");
-                    curveFace.gameObject.SetActive(false);
-                    standard = transform.Find("BodyPartStandard");
-                    standard.gameObject.SetActive(false);
-                    tail = transform.Find("CatTail");
-                    tail.gameObject.SetActive(false);
+                    if (index < moveCatScript.cat.Count - 1)
+                    {
+                        curveRight = transform.Find("CatCurveRight");
+                        curveRight.gameObject.SetActive(true);
+                        curveLeft = transform.Find("CatCurveLeft");
+                        curveLeft.gameObject.SetActive(false);
+                        curveFace = transform.Find("CatCurveFace");
+                        curveFace.gameObject.SetActive(false);
+                        standard = transform.Find("BodyPartStandard");
+                        standard.gameObject.SetActive(false);
+                        tail = transform.Find("CatTail");
+                        tail.gameObject.SetActive(false);
+                    }
+                    
                     if(rotateCount > 1)
                     {
                         if (nextBody.checkNewDir("up"))
@@ -421,16 +445,20 @@ public class ChangeDirection : Body
                 }
                 else if (checkNewDir("down") && checkOldDir("right"))
                 {
-                    curveRight = transform.Find("CatCurveRight");
-                    curveRight.gameObject.SetActive(true);
-                    curveLeft = transform.Find("CatCurveLeft");
-                    curveLeft.gameObject.SetActive(false);
-                    curveFace = transform.Find("CatCurveFace");
-                    curveFace.gameObject.SetActive(false);
-                    standard = transform.Find("BodyPartStandard");
-                    standard.gameObject.SetActive(false);
-                    tail = transform.Find("CatTail");
-                    tail.gameObject.SetActive(false);
+                     if (index < moveCatScript.cat.Count - 1)
+                     {
+                        curveRight = transform.Find("CatCurveRight");
+                        curveRight.gameObject.SetActive(true);
+                        curveLeft = transform.Find("CatCurveLeft");
+                        curveLeft.gameObject.SetActive(false);
+                        curveFace = transform.Find("CatCurveFace");
+                        curveFace.gameObject.SetActive(false);
+                        standard = transform.Find("BodyPartStandard");
+                        standard.gameObject.SetActive(false);
+                        tail = transform.Find("CatTail");
+                        tail.gameObject.SetActive(false);
+                     }
+                    
                     if(rotateCount > 1)
                     {
                         if (nextBody.checkNewDir("down"))
@@ -452,16 +480,20 @@ public class ChangeDirection : Body
                 }
                 else if (checkNewDir("down") && checkOldDir("left"))
                 {
-                    curveRight = transform.Find("CatCurveRight");
-                    curveRight.gameObject.SetActive(false);
-                    curveLeft = transform.Find("CatCurveLeft");
-                    curveLeft.gameObject.SetActive(true);
-                    curveFace = transform.Find("CatCurveFace");
-                    curveFace.gameObject.SetActive(false);
-                    standard = transform.Find("BodyPartStandard");
-                    standard.gameObject.SetActive(false);
-                    tail = transform.Find("CatTail");
-                    tail.gameObject.SetActive(false);
+                    if (index < moveCatScript.cat.Count - 1)
+                    {
+                        curveRight = transform.Find("CatCurveRight");
+                        curveRight.gameObject.SetActive(false);
+                        curveLeft = transform.Find("CatCurveLeft");
+                        curveLeft.gameObject.SetActive(true);
+                        curveFace = transform.Find("CatCurveFace");
+                        curveFace.gameObject.SetActive(false);
+                        standard = transform.Find("BodyPartStandard");
+                        standard.gameObject.SetActive(false);
+                        tail = transform.Find("CatTail");
+                        tail.gameObject.SetActive(false);
+                    }
+                    
                     if(rotateCount > 1)
                     {
                         if (nextBody.checkNewDir("down"))
@@ -659,76 +691,103 @@ public class ChangeDirection : Body
         {
             //daca vezi ca mai apare bug-ul ala fa sa se roteasca doar daca nu e pe collider
             case 1:
-                transform.Rotate(-90, 0, 0, Space.Self);
-                transform.position += transform.TransformDirection (Vector3.up);
-                headDirections.setNewDir("right");
-                headDirections.setOldDir("up");
-                moveCatScript.SetTurnedHeadList();
-                turned = true;
-                turnAgainTimer = 0.0f;
+
+                if(!changeFace)
+                {
+                    transform.Rotate(-90, 0, 0, Space.Self);
+                    transform.position += transform.TransformDirection (Vector3.up);
+                    headDirections.setNewDir("right");
+                    headDirections.setOldDir("up");
+                    moveCatScript.SetTurnedHeadList();
+                    turned = true;
+                    turnAgainTimer = 0.0f;
+                }
                 break;
+                
             case 2:
-                transform.Rotate(90, 0, 0, Space.Self);
-                transform.position += transform.TransformDirection (Vector3.up);
-                headDirections.setNewDir("right");
-                headDirections.setOldDir("down");
-                moveCatScript.SetTurnedHeadList();
-                turned = true;
-                turnAgainTimer = 0.0f;
+                if(!changeFace)
+                {
+                    transform.Rotate(90, 0, 0, Space.Self);
+                    transform.position += transform.TransformDirection (Vector3.up);
+                    headDirections.setNewDir("right");
+                    headDirections.setOldDir("down");
+                    moveCatScript.SetTurnedHeadList();
+                    turned = true;
+                    turnAgainTimer = 0.0f;
+                    }
                 break;
             case 3:
-                transform.Rotate(90, 0, 0, Space.Self);
-                transform.position += transform.TransformDirection (Vector3.up);
-                headDirections.setNewDir("left");
-                headDirections.setOldDir("up");
-                moveCatScript.SetTurnedHeadList();
-                turned = true;
-                turnAgainTimer = 0.0f;
+                if(!changeFace)
+                {
+                    transform.Rotate(90, 0, 0, Space.Self);
+                    transform.position += transform.TransformDirection (Vector3.up);
+                    headDirections.setNewDir("left");
+                    headDirections.setOldDir("up");
+                    moveCatScript.SetTurnedHeadList();
+                    turned = true;
+                    turnAgainTimer = 0.0f;
+                }
                 break;
+                
             case 4:
-                transform.Rotate(-90, 0, 0, Space.Self);
-                transform.position += transform.TransformDirection (Vector3.up);
-                headDirections.setNewDir("left");
-                headDirections.setOldDir("down");
-                moveCatScript.SetTurnedHeadList();
-                turned = true;
-                turnAgainTimer = 0.0f;
+                if(!changeFace)
+                {
+                    transform.Rotate(-90, 0, 0, Space.Self);
+                    transform.position += transform.TransformDirection (Vector3.up);
+                    headDirections.setNewDir("left");
+                    headDirections.setOldDir("down");
+                    moveCatScript.SetTurnedHeadList();
+                    turned = true;
+                    turnAgainTimer = 0.0f;
+                }
                 break;
             case 5:
-                transform.Rotate(90, 0, 0, Space.Self);
-                transform.position += transform.TransformDirection (Vector3.up);
-                headDirections.setNewDir("up");
-                headDirections.setOldDir("right");
-                moveCatScript.SetTurnedHeadList();
-                turned = true;
-                turnAgainTimer = 0.0f;
+                if(!changeFace)
+                {
+                    transform.Rotate(90, 0, 0, Space.Self);
+                    transform.position += transform.TransformDirection (Vector3.up);
+                    headDirections.setNewDir("up");
+                    headDirections.setOldDir("right");
+                    moveCatScript.SetTurnedHeadList();
+                    turned = true;
+                    turnAgainTimer = 0.0f;
+                }
                 break;
             case 6:
-                transform.Rotate(-90, 0, 0, Space.Self);
-                transform.position += transform.TransformDirection (Vector3.up);
-                headDirections.setNewDir("up");
-                headDirections.setOldDir("left");
-                moveCatScript.SetTurnedHeadList();
-                turned = true;
-                turnAgainTimer = 0.0f;
+                if(!changeFace)
+                {
+                    transform.Rotate(-90, 0, 0, Space.Self);
+                    transform.position += transform.TransformDirection (Vector3.up);
+                    headDirections.setNewDir("up");
+                    headDirections.setOldDir("left");
+                    moveCatScript.SetTurnedHeadList();
+                    turned = true;
+                    turnAgainTimer = 0.0f;
+                }
                 break;
             case 7:
-                transform.Rotate(-90, 0, 0, Space.Self);
-                transform.position += transform.TransformDirection (Vector3.up);
-                headDirections.setNewDir("down");
-                headDirections.setOldDir("right");
-                moveCatScript.SetTurnedHeadList();
-                turned = true;
-                turnAgainTimer = 0.0f;
+                if(!changeFace)
+                {
+                    transform.Rotate(-90, 0, 0, Space.Self);
+                    transform.position += transform.TransformDirection (Vector3.up);
+                    headDirections.setNewDir("down");
+                    headDirections.setOldDir("right");
+                    moveCatScript.SetTurnedHeadList();
+                    turned = true;
+                    turnAgainTimer = 0.0f;
+                }
                 break;
             case 8:
-                transform.Rotate(90, 0, 0, Space.Self);
-                transform.position += transform.TransformDirection (Vector3.up);
-                headDirections.setNewDir("down");
-                headDirections.setOldDir("left");
-                moveCatScript.SetTurnedHeadList();
-                turned = true;
-                turnAgainTimer = 0.0f;
+                if(!changeFace)
+                {
+                    transform.Rotate(90, 0, 0, Space.Self);
+                    transform.position += transform.TransformDirection (Vector3.up);
+                    headDirections.setNewDir("down");
+                    headDirections.setOldDir("left");
+                    moveCatScript.SetTurnedHeadList();
+                    turned = true;
+                    turnAgainTimer = 0.0f;
+                }
                 break;
 
             

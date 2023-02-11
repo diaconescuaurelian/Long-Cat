@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Move : Body
 {
-    public float timer = 0f;
+    private float timer = 0f;
     private static float moveTime = 0.9f;
     private static float quickMoveTime = 0.15f;
     private int distance = -1;
@@ -26,6 +26,17 @@ public class Move : Body
     {
         catObject = GameObject.FindGameObjectWithTag("LongCat");
         moveCatScript = catObject.GetComponent<MoveCat>();
+    }
+    void Start()
+    {
+        if(ChooseLevel.GetDifficulty() && !ChooseLevel.GetMode())
+        {
+            moveTime = quickMoveTime;
+        }
+        else
+        {
+            moveTime = 0.9f;
+        }
     }
 
     // Method that will be used to move the head in its up direction with 1 unit at every 0.9 or 0.15 if space key is pressed.

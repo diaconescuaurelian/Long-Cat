@@ -8,8 +8,8 @@ public class RotateCamera : MonoBehaviour
 
     GameObject snakeHead;
     ChangeDirection snekeHeadDirection;
-    public float speed = 90;
-    public bool finished = true;
+    private float speed = 90;
+    private bool finished = true;
     void Awake()
     {
         snakeHead = GameObject.FindGameObjectWithTag("Head");

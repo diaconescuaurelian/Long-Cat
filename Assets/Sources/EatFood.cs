@@ -1,6 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+using UnityEngine.SceneManagement;
+
 
 public class EatFood : MonoBehaviour
 {
@@ -22,6 +27,13 @@ public class EatFood : MonoBehaviour
     Transform curveFace;
     Transform standard;
     Transform tail;
+    public static int scoreValue = 0;
+    [SerializeField] private TMP_Text score;
+    public AudioClip soundEffectClip;
+    private AudioSource soundEffectSource;
+    private GameObject scoreObject;
+    public AudioClip soundEffectLevelComplete;
+    private AudioSource soundEffectLevel;
     // Start is called before the first frame update
     void Awake()
     {
@@ -29,10 +41,18 @@ public class EatFood : MonoBehaviour
         foodSpawner = GameObject.FindGameObjectWithTag("FoodSpawner");
         catScript = catBody.GetComponent<MoveCat>();
         gridScript = foodSpawner.GetComponent<Grid>();
+        scoreObject = GameObject.FindGameObjectWithTag("Score");
     }
     void Start()
     {
+        scoreValue = 0;
+        //score = FindObjectOfType<TextMeshProUGUI>();
+        score = scoreObject.GetComponent<TextMeshProUGUI>();
+        soundEffectSource = gameObject.AddComponent<AudioSource>();
+        soundEffectSource.clip = soundEffectClip;
         
+        soundEffectLevel = gameObject.AddComponent<AudioSource>();
+        soundEffectLevel.clip = soundEffectClip;
     }
 
     // Update is called once per frame
@@ -40,6 +60,10 @@ public class EatFood : MonoBehaviour
     {
         food = GameObject.FindGameObjectWithTag("Food");
         ChangePrefab();
+        score.text = Convert.ToString(scoreValue);
+        last = catScript.cat.Count - 1;
+        catScript.cat[last].transform.rotation = catScript.cat[last - 1].transform.rotation;
+        GoToNextLevel();
     }
     void OnTriggerEnter(Collider collision)
     {
@@ -74,6 +98,8 @@ public class EatFood : MonoBehaviour
             standard.gameObject.SetActive(true);
             tail = catScript.cat[last].transform.Find("CatTail");
             tail.gameObject.SetActive(false);
+            scoreValue++;
+            PlaySoundEffect();
         }
     }
     public void ChangePrefab()
@@ -90,6 +116,46 @@ public class EatFood : MonoBehaviour
         tail = catScript.cat[index].transform.Find("CatTail");
         tail.gameObject.SetActive(true);
     }
+    public void PlaySoundEffect()
+    {
+        soundEffectSource.PlayOneShot(soundEffectClip);
+    }
 
-    
+    public void PlaySoundEffectLevelComplete()
+    {
+        soundEffectLevel.volume = 0.01f;
+        soundEffectLevel.PlayOneShot(soundEffectLevelComplete);
+    }
+
+    public void GoToNextLevel()
+    {
+        if (scoreValue == 2 && !ChooseLevel.GetMode())
+        {
+            PlaySoundEffectLevelComplete();
+            StartCoroutine(WaitTwoSeconds());
+        }
+    }
+    private IEnumerator WaitTwoSeconds()
+    {
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        Time.timeScale = 0;
+        float pauseEndTime = Time.realtimeSinceStartup + 2f;
+        while (Time.realtimeSinceStartup < pauseEndTime)
+        {
+            yield return 0;
+        }
+        Time.timeScale = 1;
+        SceneManager.LoadScene(++currentSceneIndex);
+    }
+    public static bool CheckScore()
+    {
+        if(scoreValue == 2 && !ChooseLevel.GetMode())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

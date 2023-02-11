@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Body : MonoBehaviour
 {
-    public string bodyType;
-    public string oldDir;
-    public string newDir;
+    private string bodyType;
+    protected string oldDir;
+    protected string newDir;
 
     void Start()
     {
