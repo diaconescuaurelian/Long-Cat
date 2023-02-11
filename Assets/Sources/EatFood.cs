@@ -48,11 +48,16 @@ public class EatFood : MonoBehaviour
         scoreValue = 0;
         //score = FindObjectOfType<TextMeshProUGUI>();
         score = scoreObject.GetComponent<TextMeshProUGUI>();
-        soundEffectSource = gameObject.AddComponent<AudioSource>();
-        soundEffectSource.clip = soundEffectClip;
+        //soundEffectSource = gameObject.AddComponent<AudioSource>();
+        //soundEffectSource.clip = soundEffectClip;
         
-        soundEffectLevel = gameObject.AddComponent<AudioSource>();
-        soundEffectLevel.clip = soundEffectClip;
+        //soundEffectLevel = gameObject.AddComponent<AudioSource>();
+        //soundEffectLevel.clip = soundEffectClip;
+        AudioSource[] audioSources = GetComponents<AudioSource>();
+        soundEffectSource = audioSources[0];
+        soundEffectLevel = audioSources[1];
+        soundEffectLevelComplete = soundEffectLevel.clip;
+        soundEffectClip = soundEffectSource.clip;
     }
 
     // Update is called once per frame
@@ -119,17 +124,19 @@ public class EatFood : MonoBehaviour
     public void PlaySoundEffect()
     {
         soundEffectSource.PlayOneShot(soundEffectClip);
+        //soundEffectSource.Play();
     }
 
     public void PlaySoundEffectLevelComplete()
     {
-        soundEffectLevel.volume = 0.01f;
+        //soundEffectLevel.volume = 0.01f;
         soundEffectLevel.PlayOneShot(soundEffectLevelComplete);
+        //soundEffectLevel.Play();
     }
 
     public void GoToNextLevel()
     {
-        if (scoreValue == 2 && !ChooseLevel.GetMode())
+        if (scoreValue == 20 && !ChooseLevel.GetMode())
         {
             PlaySoundEffectLevelComplete();
             StartCoroutine(WaitTwoSeconds());
@@ -149,7 +156,7 @@ public class EatFood : MonoBehaviour
     }
     public static bool CheckScore()
     {
-        if(scoreValue == 2 && !ChooseLevel.GetMode())
+        if(scoreValue == 20 && !ChooseLevel.GetMode())
         {
             return true;
         }

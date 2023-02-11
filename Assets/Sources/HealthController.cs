@@ -32,8 +32,9 @@ public class HealthController : MonoBehaviour
         {
             UpdateHealth();
         }
-        soundEffectSource = gameObject.AddComponent<AudioSource>();
-        soundEffectSource.clip = soundEffectClip;
+        AudioSource[] audioSources = GetComponents<AudioSource>();
+        soundEffectSource = audioSources[2];
+        soundEffectClip = soundEffectSource.clip;
         //reset the session if the number of lives goes to 0
     }
     private void Start()

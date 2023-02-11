@@ -14,9 +14,7 @@ public class Music : MonoBehaviour
     }
     public void Play()
     {
-        musicSource = gameObject.AddComponent<AudioSource>();
-        musicSource.clip = musicClip;
-        musicSource.loop = true;
+        musicSource = gameObject.GetComponent<AudioSource>();
         musicSource.Play();
         
     }
