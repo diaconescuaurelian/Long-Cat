@@ -34,6 +34,7 @@ public class EatFood : MonoBehaviour
     private GameObject scoreObject;
     public AudioClip soundEffectLevelComplete;
     private AudioSource soundEffectLevel;
+    private bool playLevelSoundOnce = false;
     // Start is called before the first frame update
     void Awake()
     {
@@ -123,20 +124,31 @@ public class EatFood : MonoBehaviour
     }
     public void PlaySoundEffect()
     {
-        soundEffectSource.PlayOneShot(soundEffectClip);
-        //soundEffectSource.Play();
+        //soundEffectSource.PlayOneShot(soundEffectClip);
+        if (scoreValue != 2 && !ChooseLevel.GetMode())
+        {
+            soundEffectSource.Play();
+        }
+        else if (ChooseLevel.GetMode())
+        {
+            soundEffectSource.Play();
+        }
     }
 
     public void PlaySoundEffectLevelComplete()
     {
         //soundEffectLevel.volume = 0.01f;
-        soundEffectLevel.PlayOneShot(soundEffectLevelComplete);
+        if (!playLevelSoundOnce)
+        {
+            soundEffectLevel.PlayOneShot(soundEffectLevelComplete);
+            playLevelSoundOnce = true;
+        }
         //soundEffectLevel.Play();
     }
 
     public void GoToNextLevel()
     {
-        if (scoreValue == 20 && !ChooseLevel.GetMode())
+        if (scoreValue == 2 && !ChooseLevel.GetMode())
         {
             PlaySoundEffectLevelComplete();
             StartCoroutine(WaitTwoSeconds());
@@ -156,7 +168,7 @@ public class EatFood : MonoBehaviour
     }
     public static bool CheckScore()
     {
-        if(scoreValue == 20 && !ChooseLevel.GetMode())
+        if(scoreValue == 2 && !ChooseLevel.GetMode())
         {
             return true;
         }

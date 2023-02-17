@@ -13,6 +13,9 @@ public class EndMenu : MonoBehaviour
     [SerializeField] private TMP_Text highscore;
     [SerializeField] private TMP_Text score;
     [SerializeField] private TMP_Text highscoreValue;
+    [SerializeField] private GameObject Credits;
+    [SerializeField] private GameObject GameOver;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -57,6 +60,7 @@ public class EndMenu : MonoBehaviour
                 highscoreValue.text = Convert.ToString(PlayerPrefs.GetInt("Highscore"));
             }
         }
+
     }
 
     // Update is called once per frame
@@ -71,5 +75,15 @@ public class EndMenu : MonoBehaviour
     public void LoadMainMenu()
     {
         SceneManager.LoadScene(0);
+    }
+    public void CreditsButton()
+    {
+        Credits.gameObject.SetActive(true);
+        GameOver.gameObject.SetActive(false);
+    }
+    public void BackButton()
+    {
+        GameOver.gameObject.SetActive(true);
+        Credits.gameObject.SetActive(false);
     }
 }
