@@ -125,7 +125,7 @@ public class EatFood : MonoBehaviour
     public void PlaySoundEffect()
     {
         //soundEffectSource.PlayOneShot(soundEffectClip);
-        if (scoreValue != 2 && !ChooseLevel.GetMode())
+        if (scoreValue != 20 && !ChooseLevel.GetMode())
         {
             soundEffectSource.Play();
         }
@@ -148,7 +148,7 @@ public class EatFood : MonoBehaviour
 
     public void GoToNextLevel()
     {
-        if (scoreValue == 2 && !ChooseLevel.GetMode())
+        if (scoreValue == 20 && !ChooseLevel.GetMode())
         {
             PlaySoundEffectLevelComplete();
             StartCoroutine(WaitTwoSeconds());
@@ -168,7 +168,7 @@ public class EatFood : MonoBehaviour
     }
     public static bool CheckScore()
     {
-        if(scoreValue == 2 && !ChooseLevel.GetMode())
+        if(scoreValue == 20 && !ChooseLevel.GetMode())
         {
             return true;
         }

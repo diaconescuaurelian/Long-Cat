@@ -65,7 +65,7 @@ public class ChangeDirection : Body
             
         }
         //Turn right if facing down
-        else if (Input.GetKeyDown(KeyCode.RightArrow) && checkNewDir("down") && !changeFace && turnAgainTimer > 0.01f)
+        else if (Input.GetKeyDown(KeyCode.RightArrow) && checkNewDir("down") && !changeFace && turnAgainTimer > 0.03f)
         {
             rotationType = 2;
             if (headMove.getTimer() < 0.05f)
@@ -85,7 +85,7 @@ public class ChangeDirection : Body
             
         }
         //Turn left if facing up
-        else if (Input.GetKeyDown(KeyCode.LeftArrow)  && checkNewDir("up") && !changeFace && turnAgainTimer > 0.01f)
+        else if (Input.GetKeyDown(KeyCode.LeftArrow)  && checkNewDir("up") && !changeFace && turnAgainTimer > 0.03f)
         {
             rotationType = 3;
             if ( headMove.getTimer() < 0.05f)
@@ -104,7 +104,7 @@ public class ChangeDirection : Body
             }
         }
         //Turn left if facing down
-        else if (Input.GetKeyDown(KeyCode.LeftArrow) && checkNewDir("down") && !changeFace && turnAgainTimer > 0.01f)
+        else if (Input.GetKeyDown(KeyCode.LeftArrow) && checkNewDir("down") && !changeFace && turnAgainTimer > 0.03f)
         {
             rotationType = 4;
             if ( headMove.getTimer() < 0.05f)
@@ -123,7 +123,7 @@ public class ChangeDirection : Body
             }
         }
         //Turn up if facing right
-        else if (Input.GetKeyDown(KeyCode.UpArrow) &&  checkNewDir("right") && !changeFace && turnAgainTimer > 0.01f)
+        else if (Input.GetKeyDown(KeyCode.UpArrow) &&  checkNewDir("right") && !changeFace && turnAgainTimer > 0.03f)
         {
             rotationType = 5;
             if (headMove.getTimer() < 0.05f)
@@ -143,7 +143,7 @@ public class ChangeDirection : Body
             
         }
         //Turn up if facing left
-        else if (Input.GetKeyDown(KeyCode.UpArrow) && checkNewDir("left") && !changeFace && turnAgainTimer > 0.01f)
+        else if (Input.GetKeyDown(KeyCode.UpArrow) && checkNewDir("left") && !changeFace && turnAgainTimer > 0.03f)
         {
             rotationType = 6;
             if (headMove.getTimer() < 0.05f)
@@ -163,7 +163,7 @@ public class ChangeDirection : Body
             
         }
         //Turn down if facing right
-        else if (Input.GetKeyDown(KeyCode.DownArrow) &&  checkNewDir("right") && !changeFace && turnAgainTimer > 0.01f)
+        else if (Input.GetKeyDown(KeyCode.DownArrow) &&  checkNewDir("right") && !changeFace && turnAgainTimer > 0.03f)
         {
             rotationType = 7;
             if (headMove.getTimer() < 0.05f)
@@ -183,7 +183,7 @@ public class ChangeDirection : Body
             
         }
         //Turn down if facing left
-        else if (Input.GetKeyDown(KeyCode.DownArrow) && checkNewDir("left") && !changeFace && turnAgainTimer > 0.01f)
+        else if (Input.GetKeyDown(KeyCode.DownArrow) && checkNewDir("left") && !changeFace && turnAgainTimer > 0.03f)
         {
             rotationType = 8;
             if (headMove.getTimer() < 0.05f)
